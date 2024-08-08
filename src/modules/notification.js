@@ -1,8 +1,3 @@
-import {
-  BOT_API_TOKEN,
-  MEMBER_GROUP_ID,
-  MESSAGING_KEY,
-} from "../modules/constants";
 import axios from "axios";
 import { firestore } from "../context/FirbaseContext";
 import { collection, getDocs, query } from "firebase/firestore";
@@ -20,7 +15,7 @@ export const sendNotifications = async (token, title, body) => {
     method: "post",
     url: "https://fcm.googleapis.com/fcm/send",
     headers: {
-      Authorization: `key=${MESSAGING_KEY}`,
+      Authorization: `key=${process.env.USPRYS_MESSAGING_KEY}`,
       "Content-Type": "application/json",
     },
     data: data,
@@ -62,9 +57,9 @@ export const notifyAllApp = async (title, body) => {
 export const sendToTelegram = async (message) => {
   try {
     const response = await axios.post(
-      `https://api.telegram.org/bot${BOT_API_TOKEN}/sendMessage`,
+      `https://api.telegram.org/bot${process.env.USPRYS_BOT_API_TOKEN}/sendMessage`,
       {
-        chat_id: MEMBER_GROUP_ID, // Replace 'CHAT_ID' with your actual chat ID
+        chat_id: process.env.USPRYS_MEMBER_GROUP_ID, // Replace 'CHAT_ID' with your actual chat ID
         text: message,
       }
     );
