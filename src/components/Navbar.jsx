@@ -417,7 +417,7 @@ export default function Navbar() {
       <div className="container-fluid">
         <Link className="navbar-brand" href="/">
           <img
-            src="https://raw.githubusercontent.com/amtawestwbtpta/awwbtptadata/main/logo.png"
+            src="https://raw.githubusercontent.com/usprys/usprysdata/main/logoweb.png"
             alt="LOGO"
             width={"70vw"}
           />
