@@ -130,8 +130,8 @@ export default function Login() {
           autoComplete="off"
           onSubmit={submitData}
         >
-          <div class="input-group mb-3">
-            <span class="input-group-text">Username</span>
+          <div className="input-group mb-3">
+            <span className="input-group-text">Username</span>
             <input
               type="text"
               className="form-control"
@@ -144,8 +144,8 @@ export default function Login() {
           {userNameErr.length > 0 && (
             <p className="text-danger my-2">{userNameErr}</p>
           )}
-          <div class="input-group mb-3">
-            <span class="input-group-text">Password</span>
+          <div className="input-group mb-3">
+            <span className="input-group-text">Password</span>
             <input
               type="password"
               className="form-control"
