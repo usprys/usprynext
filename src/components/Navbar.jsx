@@ -348,10 +348,10 @@ export default function Navbar() {
           <li className="nav-item">
             <Link
               className="nav-link"
-              href="/SchoolTeacherDataUnlog"
+              href="/studentdata"
               onClick={handleNavCollapse}
             >
-              Student Teacher Data
+              Student Data
             </Link>
           </li>
 

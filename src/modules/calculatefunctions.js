@@ -1,4 +1,10 @@
 import { DA, HRA } from "./constants";
+import bcrypt from "bcryptjs";
+export const comparePassword = (userPassword, serverPassword) => {
+  let match = bcrypt.compareSync(userPassword, serverPassword);
+
+  return match;
+};
 export function round2dec(value) {
   if (value % 1 !== 0) {
     return Number(Math.round(value + "e" + 2) + "e-" + 2).toFixed(2);
