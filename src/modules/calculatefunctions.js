@@ -689,3 +689,13 @@ export const createDownloadLink = (myData, fileName) => {
 export function round5(x) {
   return Math.ceil(x / 5) * 5;
 }
+
+export const setInputNumberMaxLength = (value, maxLength) => {
+  if (value) {
+    if (value.length > maxLength) {
+      return value.slice(0, maxLength);
+    } else {
+      return value;
+    }
+  }
+};

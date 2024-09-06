@@ -8,7 +8,8 @@ import { ToastContainer, toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { useGlobalContext } from "../context/Store";
 import { Loader } from "rsuite";
-
+import Image from "next/image";
+import schoolLogo from "@/../public/assets/images/logoweb.png";
 export default function Navbar() {
   const {
     state,
@@ -109,11 +110,11 @@ export default function Navbar() {
     }
     const teacherDifference = (Date.now() - teacherUpdateTime) / 1000 / 60 / 15;
     if (teacherDifference >= 1 || teachersState.length === 0) {
-      storeTeachersData();
+      // storeTeachersData();
     }
     const schDifference = (Date.now() - studentUpdateTime) / 1000 / 60 / 15;
     if (schDifference >= 1 || studentState.length === 0) {
-      storeStudentData();
+      // storeStudentData();
     }
 
     // eslint-disable-next-line
@@ -348,10 +349,28 @@ export default function Navbar() {
           <li className="nav-item">
             <Link
               className="nav-link"
+              href="/admission"
+              onClick={handleNavCollapse}
+            >
+              Addmission
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link
+              className="nav-link"
               href="/studentdata"
               onClick={handleNavCollapse}
             >
               Student Data
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link
+              className="nav-link"
+              href="/result"
+              onClick={handleNavCollapse}
+            >
+              Result
             </Link>
           </li>
 
@@ -416,10 +435,11 @@ export default function Navbar() {
       />
       <div className="container-fluid">
         <Link className="navbar-brand" href="/">
-          <img
-            src="https://raw.githubusercontent.com/usprys/usprysdata/main/logoweb.png"
+          <Image
+            // src="https://raw.githubusercontent.com/usprys/usprysdata/main/logoweb.png"
+            src={schoolLogo}
             alt="LOGO"
-            width={"70vw"}
+            style={{ width: 70, height: 70 }}
           />
         </Link>
         <button
