@@ -122,6 +122,13 @@ body {
   .noprint {
     display: none;
   }
+  @page {
+    size: A4;
+    margin: 20mm;
+  }
+  body {
+    margin: 0;
+  }
 }
 
 @import url("https://fonts.googleapis.com/css2?family=Fasthand&display=swap");

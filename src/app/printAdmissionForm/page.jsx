@@ -1,13 +1,12 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useGlobalContext } from "../../context/Store";
 import schoolLogo from "@/../public/assets/images/logoweb.png";
 import Image from "next/image";
 import useWindowSize from "@rooks/use-window-size";
-import Ramij from "./ramij.json";
 import { SCHOOLBENGALIADDRESS, SCHOOLBENGALINAME } from "@/modules/constants";
 import { useRouter } from "next/navigation";
-import { usePDF } from "react-to-pdf";
+
 export default function PrintAddmissionForm() {
   const { stateObject } = useGlobalContext();
   const { innerWidth } = useWindowSize();
@@ -44,16 +43,13 @@ export default function PrintAddmissionForm() {
   const date = new Date(student_addmission_dateAndTime);
   const scrWidth = (w) => (w * innerWidth) / 100;
 
-  const { toPDF, targetRef } = usePDF({
-    filename: `Apllication Form of ${student_eng_name}.pdf`,
-  });
   useEffect(() => {
     document.title = `Apllication Form of ${student_eng_name}`;
-    toPDF();
-    router.push("/admission");
+
+    // router.push("/admission");
   }, []);
   return (
-    <div className="container-fluid ben" ref={targetRef}>
+    <div className="container-fluid mx-auto my-auto ben p-2">
       <div className="d-flex flex-column justify-content-start align-items-start flex-wrap">
         <div className="mx-auto d-flex justify-content-between align-items-center">
           <Image

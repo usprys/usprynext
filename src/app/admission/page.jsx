@@ -86,12 +86,12 @@ export default function Admission() {
   const [showForm, setShowForm] = useState(true);
   const [showUpdateForm, setShowUpdateForm] = useState(false);
   const [loader, setLoader] = useState(false);
-  const [ticket, setTicket] = useState("");
+  const [applicationNo, setAplicationNo] = useState("");
   const [showErr, setShowErr] = useState(false);
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [showSearchedResult, setShowSearchedResult] = useState(false);
 
-  const [searchedTicket, setSearchedTicket] = useState({
+  const [searchedApplicationNo, setSearchedApplicationNo] = useState({
     id: "",
     student_beng_name: "",
     student_eng_name: "",
@@ -405,18 +405,18 @@ export default function Admission() {
     }
   };
 
-  const searchTicket = async () => {
+  const searchApplication = async () => {
     setLoader(true);
-    const ref = doc(firestore, "admission", ticket);
+    const ref = doc(firestore, "admission", applicationNo);
     try {
       const snap = await getDoc(ref);
       const data = snap.data();
-      setSearchedTicket(data);
+      setSearchedApplicationNo(data);
       setShowSearchedResult(true);
       setShowUpdateForm(false);
       setLoader(false);
     } catch (error) {
-      toast.error("Ticket Not Found!", {
+      toast.error("Application Not Found!", {
         position: "top-right",
         autoClose: 1500,
         hideProgressBar: false,
@@ -575,7 +575,7 @@ export default function Admission() {
   };
   const validEditForm = () => {
     let formIsValid = true;
-    setEditErrInputField({
+    setErrEditInputField({
       student_beng_name: "",
       student_eng_name: "",
       father_beng_name: "",
@@ -598,148 +598,148 @@ export default function Admission() {
       student_previous_class_year: "",
       student_previous_school: "",
     });
-    if (editErrInputField.student_beng_name === "") {
+    if (errEditInputField.student_beng_name === "") {
       formIsValid = false;
-      setEditErrInputField((prevState) => ({
+      setErrEditInputField((prevState) => ({
         ...prevState,
         student_beng_name: "দয়া করে ছাত্র/ছাত্রীর বাংলা নাম লিখুন",
       }));
     }
-    if (editErrInputField.student_eng_name === "") {
+    if (errEditInputField.student_eng_name === "") {
       formIsValid = false;
-      setEditErrInputField((prevState) => ({
+      setErrEditInputField((prevState) => ({
         ...prevState,
         student_eng_name: "দয়া করে ছাত্র/ছাত্রীর ইংরাজী নাম লিখুন",
       }));
     }
-    if (editErrInputField.father_beng_name === "") {
+    if (errEditInputField.father_beng_name === "") {
       formIsValid = false;
-      setEditErrInputField((prevState) => ({
+      setErrEditInputField((prevState) => ({
         ...prevState,
         father_beng_name: "দয়া করে বাবার বাংলা নাম লিখুন",
       }));
     }
-    if (editErrInputField.father_eng_name === "") {
+    if (errEditInputField.father_eng_name === "") {
       formIsValid = false;
-      setEditErrInputField((prevState) => ({
+      setErrEditInputField((prevState) => ({
         ...prevState,
         father_eng_name: "দয়া করে বাবার ইংরাজী নাম লিখুন",
       }));
     }
-    if (editErrInputField.mother_beng_name === "") {
+    if (errEditInputField.mother_beng_name === "") {
       formIsValid = false;
-      setEditErrInputField((prevState) => ({
+      setErrEditInputField((prevState) => ({
         ...prevState,
         mother_beng_name: "দয়া করে মাতার বাংলা নাম লিখুন",
       }));
     }
-    if (editErrInputField.mother_eng_name === "") {
+    if (errEditInputField.mother_eng_name === "") {
       formIsValid = false;
-      setEditErrInputField((prevState) => ({
+      setErrEditInputField((prevState) => ({
         ...prevState,
         mother_eng_name: "দয়া করে মাতার ইংরাজী নাম লিখুন",
       }));
     }
-    if (editErrInputField.guardian_beng_name === "") {
+    if (errEditInputField.guardian_beng_name === "") {
       formIsValid = false;
-      setEditErrInputField((prevState) => ({
+      setErrEditInputField((prevState) => ({
         ...prevState,
         guardian_beng_name: "দয়া করে অভিভাবকের বাংলা নাম লিখুন",
       }));
     }
-    if (editErrInputField.guardian_eng_name === "") {
+    if (errEditInputField.guardian_eng_name === "") {
       formIsValid = false;
-      setEditErrInputField((prevState) => ({
+      setErrEditInputField((prevState) => ({
         ...prevState,
         guardian_eng_name: "দয়া করে অভিভাবকের ইংরাজী নাম লিখুন",
       }));
     }
-    if (editErrInputField.student_gender === "") {
+    if (errEditInputField.student_gender === "") {
       formIsValid = false;
-      setEditErrInputField((prevState) => ({
+      setErrEditInputField((prevState) => ({
         ...prevState,
         student_gender: "দয়া করে ছাত্র/ছাত্রীর লিঙ্গ বেছে নিন",
       }));
     }
-    if (editErrInputField.student_mobile === "") {
+    if (errEditInputField.student_mobile === "") {
       formIsValid = false;
-      setEditErrInputField((prevState) => ({
+      setErrEditInputField((prevState) => ({
         ...prevState,
         student_mobile: "দয়া করে অভিভাবকের মোবাইল নাম্বার লিখুন",
       }));
     }
-    if (editErrInputField.student_religion === "") {
+    if (errEditInputField.student_religion === "") {
       formIsValid = false;
-      setEditErrInputField((prevState) => ({
+      setErrEditInputField((prevState) => ({
         ...prevState,
         student_religion: "দয়া করে ছাত্র/ছাত্রীর ধর্ম বেছে নিন",
       }));
     }
-    if (editErrInputField.student_race === "") {
+    if (errEditInputField.student_race === "") {
       formIsValid = false;
-      setEditErrInputField((prevState) => ({
+      setErrEditInputField((prevState) => ({
         ...prevState,
         student_race: "দয়া করে ছাত্র/ছাত্রীর জাতি বেছে নিন",
       }));
     }
-    if (editErrInputField.student_bpl_status === "YES") {
-      if (editErrInputField.student_bpl_number === "") {
+    if (errEditInputField.student_bpl_status === "YES") {
+      if (errEditInputField.student_bpl_number === "") {
         formIsValid = false;
-        setEditErrInputField((prevState) => ({
+        setErrEditInputField((prevState) => ({
           ...prevState,
           student_bpl_number: "দয়া করে ছাত্র/ছাত্রীর BPL নাম্বার লিখুন",
         }));
       }
     }
-    if (editErrInputField.student_village === "") {
+    if (errEditInputField.student_village === "") {
       formIsValid = false;
-      setEditErrInputField((prevState) => ({
+      setErrEditInputField((prevState) => ({
         ...prevState,
         student_village: "দয়া করে ছাত্র/ছাত্রীর গ্রামের নাম লিখুন",
       }));
     }
-    if (editErrInputField.student_post_office === "") {
+    if (errEditInputField.student_post_office === "") {
       formIsValid = false;
-      setEditErrInputField((prevState) => ({
+      setErrEditInputField((prevState) => ({
         ...prevState,
         student_post_office: "দয়া করে ছাত্র/ছাত্রীর পোস্ট অফিসের নাম লিখুন",
       }));
     }
-    if (editErrInputField.student_police_station === "") {
+    if (errEditInputField.student_police_station === "") {
       formIsValid = false;
-      setEditErrInputField((prevState) => ({
+      setErrEditInputField((prevState) => ({
         ...prevState,
         student_police_station:
           "দয়া করে ছাত্র/ছাত্রীর পুলিশ স্টেশনের নাম লিখুন",
       }));
     }
-    if (editErrInputField.student_pin_code === "") {
+    if (errEditInputField.student_pin_code === "") {
       formIsValid = false;
-      setEditErrInputField((prevState) => ({
+      setErrEditInputField((prevState) => ({
         ...prevState,
         student_pin_code: "দয়া করে ছাত্র/ছাত্রীর পিনকোড লিখুন",
       }));
     }
-    if (editErrInputField.student_addmission_class === "") {
+    if (errEditInputField.student_addmission_class === "") {
       formIsValid = false;
-      setEditErrInputField((prevState) => ({
+      setErrEditInputField((prevState) => ({
         ...prevState,
         student_addmission_class:
           "দয়া করে ছাত্র/ছাত্রীর ভর্তি হওয়ার শ্রেনী বেছে নিন",
       }));
     }
-    if (editErrInputField.student_previous_class !== "FIRST TIME ADDMISSION") {
-      if (editErrInputField.student_previous_class_year === "") {
+    if (errEditInputField.student_previous_class !== "FIRST TIME ADDMISSION") {
+      if (errEditInputField.student_previous_class_year === "") {
         formIsValid = false;
-        setEditErrInputField((prevState) => ({
+        setErrEditInputField((prevState) => ({
           ...prevState,
           student_previous_class_year:
             "দয়া করে ছাত্র/ছাত্রীর পূর্বের শ্রেনীর বছর লিখুন অথবা যদি ভুল করে ছাত্র/ছাত্রীর পূর্বের শ্রেণী বেছে নিয়ে থাকেন তাহলে সেটি 'শ্রেণী বেছে নিন' করে দিন।",
         }));
       }
-      if (editErrInputField.student_previous_school === "") {
+      if (errEditInputField.student_previous_school === "") {
         formIsValid = false;
-        setEditErrInputField((prevState) => ({
+        setErrEditInputField((prevState) => ({
           ...prevState,
           student_previous_school:
             "দয়া করে ছাত্র/ছাত্রীর পূর্বের বিদ্যালয়ের নাম ও ঠিকানা লিখুন অথবা যদি ভুল করে ছাত্র/ছাত্রীর পূর্বের শ্রেণী বেছে নিয়ে থাকেন তাহলে সেটি 'শ্রেণী বেছে নিন' করে দিন।",
@@ -755,6 +755,7 @@ export default function Admission() {
       {loader ? <Loader /> : null}
       <h3>WELCOME TO {SCHOOLNAME}</h3>
       <h3>ADMISSION SECTION</h3>
+
       <button
         type="button"
         className={`btn btn-${showForm ? "warning" : "success"} m-2`}
@@ -785,7 +786,7 @@ export default function Admission() {
           setShowForm(false);
           setShowSearchedResult(false);
           setShowEditForm(false);
-          setTicket("");
+          setAplicationNo("");
         }}
       >
         {showUpdateForm ? "Close Form" : "Edit / Print Filled Form"}
@@ -802,8 +803,8 @@ export default function Admission() {
             ডকুমেন্টস আপনার সাথে রাখুন।
           </h6>
           <h6 className="text-danger">
-            *** ফর্ম ফিলাপের পর প্রদত্ত টিকিট নাম্বার অবশ্যই আপনার কাছে সংরক্ষিত
-            রাখবেন।
+            *** ফর্ম ফিলাপের পর প্রদত্ত অ্যাপ্লিকেশন নাম্বার অবশ্যই আপনার কাছে
+            সংরক্ষিত রাখবেন।
           </h6>
 
           <div className="my-4">
@@ -1463,23 +1464,25 @@ export default function Admission() {
         <div className="my-4 mx-auto">
           <h6 className="text-danger ben">
             *** অনুগ্রহ করে ফর্ম ফিলাপের সময় আপনাকে প্রদত্ত ছাত্র/ছাত্রীর
-            প্রদত্ত টিকিট নাম্বারটি নিজের কাছে রাখুন।
+            প্রদত্ত অ্যাপ্লিকেশন নাম্বারটি নিজের কাছে রাখুন।
           </h6>
           <div className="my-4 mx-auto d-flex justify-content-center align-items-center">
             <form method="post" className="mb-3 col-md-6">
-              <label className="form-label">টিকিট নাম্বার লিখুন*</label>
+              <label className="form-label">অ্যাপ্লিকেশন নাম্বার লিখুন*</label>
               <input
                 type="text"
                 name=""
                 id=""
-                value={ticket}
-                placeholder="টিকিট নাম্বার লিখুন"
+                value={applicationNo}
+                placeholder="অ্যাপ্লিকেশন নাম্বার লিখুন"
                 className="form-control"
-                onChange={(e) => setTicket(e.target.value)}
+                onChange={(e) => setAplicationNo(e.target.value)}
               />
               <br />
               {showErr && (
-                <span className="error">দয়া করে টিকিট নাম্বার লিখুন</span>
+                <span className="error">
+                  দয়া করে অ্যাপ্লিকেশন নাম্বার লিখুন
+                </span>
               )}
               <br />
               <button
@@ -1488,8 +1491,8 @@ export default function Admission() {
                 onClick={(e) => {
                   e.preventDefault();
                   setShowErr(true);
-                  if (ticket.length > 0) {
-                    searchTicket();
+                  if (applicationNo.length > 0) {
+                    searchApplication();
                     setShowErr(false);
                   } else {
                     setShowErr(true);
@@ -1508,7 +1511,7 @@ export default function Admission() {
             Congrats! আপনার ফর্মটি সাফল্যের সাথে আমাদের কাছে জমা পড়ে গেছে!
           </h3>
           <h3 className="text-success">
-            অনুগ্রহ করে লিখে রাখবেন আপনার টিকিট নাম্বারটি হলো।
+            অনুগ্রহ করে লিখে রাখবেন আপনার অ্যাপ্লিকেশন নাম্বারটি হলো।
           </h3>
           <div className="bg-light  mx-auto p-4 rounded">
             <div className="float-end">
@@ -1536,7 +1539,9 @@ export default function Admission() {
                     size={30}
                     color="green"
                   />
-                  <h6 className="text-success my-1">Ticket Copied</h6>
+                  <h6 className="text-success my-1">
+                    Application Number Copied
+                  </h6>
                 </div>
               )}
             </div>
@@ -1582,17 +1587,17 @@ export default function Admission() {
             </thead>
             <tbody style={{ verticalAlign: "center" }}>
               <td className="p-2" style={{ border: "1px solid black" }}>
-                {searchedTicket.id}
+                {searchedApplicationNo.id}
               </td>
               <td className="p-2" style={{ border: "1px solid black" }}>
-                {searchedTicket.student_eng_name}
+                {searchedApplicationNo.student_eng_name}
               </td>
               <td className="p-2" style={{ border: "1px solid black" }}>
-                {searchedTicket.father_eng_name}
+                {searchedApplicationNo.father_eng_name}
               </td>
               <td className="p-2" style={{ border: "1px solid black" }}>
                 {DateValueToSring(
-                  searchedTicket.student_addmission_dateAndTime
+                  searchedApplicationNo.student_addmission_dateAndTime
                 )}
               </td>
               <td className="p-2">
@@ -1601,7 +1606,7 @@ export default function Admission() {
                     type="button"
                     className="btn btn-success btn-sm m-2"
                     onClick={() => {
-                      setStateObject(searchedTicket);
+                      setStateObject(searchedApplicationNo);
                       router.push("/printAdmissionForm");
                     }}
                   >
@@ -1611,7 +1616,7 @@ export default function Admission() {
                     type="button"
                     className="btn btn-warning btn-sm m-2"
                     onClick={() => {
-                      setEditInputField(searchedTicket);
+                      setEditInputField(searchedApplicationNo);
                       setShowEditForm(true);
                       setShowSearchedResult(false);
                       setShowUpdateForm(false);
@@ -1619,7 +1624,7 @@ export default function Admission() {
                         setTimeout(() => {
                           document.getElementById("student_birthday").value =
                             getCurrentDateInput(
-                              searchedTicket.student_birthday
+                              searchedApplicationNo.student_birthday
                             );
                         }, 500);
                       }
@@ -1634,111 +1639,111 @@ export default function Admission() {
           {/* <div className="row">
             <h6 className="text-center col-md-3">
               ছাত্র/ছাত্রীর বাংলায় নাম:
-              <br /> {searchedTicket.student_beng_name}
+              <br /> {searchedApplicationNo.student_beng_name}
             </h6>
             <h6 className="text-center col-md-3">
               ছাত্র/ছাত্রীর ইংরাজীতে নাম:
-              <br /> {searchedTicket.student_eng_name}
+              <br /> {searchedApplicationNo.student_eng_name}
             </h6>
             <h6 className="text-center col-md-3">
               ছাত্র/ছাত্রীর জন্ম তারিখ:
-              <br /> {searchedTicket.student_birthday}
+              <br /> {searchedApplicationNo.student_birthday}
             </h6>
             <h6 className="text-center col-md-3">
               ছাত্র/ছাত্রীর আধার নাম্বার:
-              <br /> {searchedTicket.student_aadhaar}
+              <br /> {searchedApplicationNo.student_aadhaar}
             </h6>
             <h6 className="text-center col-md-3">
               ছাত্র/ছাত্রীর লিঙ্গ:
-              <br /> {searchedTicket.student_gender}
+              <br /> {searchedApplicationNo.student_gender}
             </h6>
             <h6 className="text-center col-md-3">
               অভিভাবকের মোবাইল নাম্বার:
-              <br /> {searchedTicket.student_mobile}
+              <br /> {searchedApplicationNo.student_mobile}
             </h6>
             <h6 className="text-center col-md-3">
               পিতার বাংলায় নাম:
-              <br /> {searchedTicket.father_beng_name}
+              <br /> {searchedApplicationNo.father_beng_name}
             </h6>
             <h6 className="text-center col-md-3">
               পিতার ইংরাজীতে নাম:
-              <br /> {searchedTicket.father_eng_name}
+              <br /> {searchedApplicationNo.father_eng_name}
             </h6>
             <h6 className="text-center col-md-3">
               মাতার বাংলায় নাম:
-              <br /> {searchedTicket.mother_beng_name}
+              <br /> {searchedApplicationNo.mother_beng_name}
             </h6>
             <h6 className="text-center col-md-3">
               মাতার ইংরাজীতে নাম:
-              <br /> {searchedTicket.mother_eng_name}
+              <br /> {searchedApplicationNo.mother_eng_name}
             </h6>
             <h6 className="text-center col-md-3">
               অভিভাবকের বাংলায় নাম:
-              <br /> {searchedTicket.guardian_beng_name}
+              <br /> {searchedApplicationNo.guardian_beng_name}
             </h6>
             <h6 className="text-center col-md-3">
               অভিভাবকের ইংরাজীতে নাম:
-              <br /> {searchedTicket.guardian_eng_name}
+              <br /> {searchedApplicationNo.guardian_eng_name}
             </h6>
             <h6 className="text-center col-md-3">
               ছাত্র/ছাত্রীর ধর্ম:
-              <br /> {searchedTicket.student_religion}
+              <br /> {searchedApplicationNo.student_religion}
             </h6>
             <h6 className="text-center col-md-3">
               ছাত্র/ছাত্রীর জাতি:
-              <br /> {searchedTicket.student_race}
+              <br /> {searchedApplicationNo.student_race}
             </h6>
             <h6 className="text-center col-md-3">
               ছাত্র/ছাত্রী বি.পি.এল. কিনা?:
-              <br /> {searchedTicket.student_bpl_status}
+              <br /> {searchedApplicationNo.student_bpl_status}
             </h6>
 
-            {searchedTicket.student_bpl_status === "YES" && (
+            {searchedApplicationNo.student_bpl_status === "YES" && (
               <h6 className="text-center col-md-3">
                 অভিভাবকের বি.পি.এল. নাম্বার:
-                <br /> {searchedTicket.student_bpl_number}
+                <br /> {searchedApplicationNo.student_bpl_number}
               </h6>
             )}
             <h6 className="text-center col-md-3">
               ছাত্র/ছাত্রীর গ্রামের নাম:
-              <br /> {searchedTicket.student_village}
+              <br /> {searchedApplicationNo.student_village}
             </h6>
             <h6 className="text-center col-md-3">
               ছাত্র/ছাত্রীর পোস্ট অফিসের নাম:
-              <br /> {searchedTicket.student_post_office}
+              <br /> {searchedApplicationNo.student_post_office}
             </h6>
             <h6 className="text-center col-md-3">
               ছাত্র/ছাত্রীর পুলিশ স্টেশনের নাম:
-              {searchedTicket.student_police_station}
+              {searchedApplicationNo.student_police_station}
             </h6>
             <h6 className="text-center col-md-3">
               ছাত্র/ছাত্রীর পিনকোড:
-              <br /> {searchedTicket.student_pin_code}
+              <br /> {searchedApplicationNo.student_pin_code}
             </h6>
             <h6 className="text-center col-md-3">
               ছাত্র/ছাত্রীর বর্তমান ভর্তি হওয়ার শ্রেণী:
-              {searchedTicket.student_addmission_class}
+              {searchedApplicationNo.student_addmission_class}
             </h6>
             <h6 className="text-center col-md-3">
               ফর্ম জমা দেওয়ার তারিখ:
-              {DateValueToSring(searchedTicket.student_addmission_dateAndTime)}
+              {DateValueToSring(searchedApplicationNo.student_addmission_dateAndTime)}
             </h6>
-            {searchedTicket.student_previous_class !== "" && (
+            {searchedApplicationNo.student_previous_class !== "" && (
               <div className="row">
                 <h6 className="text-center col-md-3">
                   ছাত্র/ছাত্রীর পূর্বের শ্রেণী:
                   <br />
-                  {searchedTicket.student_previous_class}
+                  {searchedApplicationNo.student_previous_class}
                 </h6>
                 <h6 className="text-center col-md-3">
                   ছাত্র/ছাত্রীর পূর্বের বর্ষ:
                   <br />
-                  {searchedTicket.student_previous_class_year}
+                  {searchedApplicationNo.student_previous_class_year}
                 </h6>
                 <h6 className="text-center col-md-3">
                   ছাত্র/ছাত্রীর পূর্বের বিদ্যালয়ের ঠিকানা:
                   <br />
-                  {searchedTicket.student_previous_school}
+                  {searchedApplicationNo.student_previous_school}
                 </h6>
               </div>
             )}
@@ -1757,7 +1762,7 @@ export default function Admission() {
             ডকুমেন্টস আপনার সাথে রাখুন।
           </h6>
           {/* <h6 className="text-danger">
-            *** ফর্ম ফিলাপের পর প্রদত্ত টিকিট নাম্বার অবশ্যই আপনার কাছে সংরক্ষিত
+            *** ফর্ম ফিলাপের পর প্রদত্ত অ্যাপ্লিকেশন নাম্বার অবশ্যই আপনার কাছে সংরক্ষিত
             রাখবেন।
           </h6> */}
 
