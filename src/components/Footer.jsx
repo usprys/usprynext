@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import { SCHOOLADDRESS, SCHOOLNAME } from "@/modules/constants";
 const Footer = () => {
   return (
     <div
@@ -14,13 +15,8 @@ const Footer = () => {
         <div className="row align-items-end justify-content-between p-1">
           <div className="col-lg-6">
             <h5 className="container text-left">Reach Us:</h5>
-            <h6 className="h-font fw-bold fs-6">
-              UTTAR SEHAGORI PRIMARY SCHOOL
-            </h6>
-            <h6 className="h-font fw-bold fs-6">
-              Vill.- Sehagori, P.O.- Khorop, P.S.- JoyPur, District- Howrah,
-              PIN- 711401
-            </h6>
+            <h6 className="h-font fw-bold fs-6">{SCHOOLNAME}</h6>
+            <h6 className="h-font fw-bold fs-6">{SCHOOLADDRESS}</h6>
           </div>
 
           <div className="col-lg-6">

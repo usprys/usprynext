@@ -15,6 +15,7 @@ import { BsClipboard, BsClipboard2Check } from "react-icons/bs";
 import { useGlobalContext } from "../../context/Store";
 import { DateValueToSring } from "../../modules/calculatefunctions";
 import { useRouter } from "next/navigation";
+import { SCHOOLNAME } from "@/modules/constants";
 export default function Admission() {
   const { setStateObject, setStateArray } = useGlobalContext();
   const router = useRouter();
@@ -752,7 +753,7 @@ export default function Admission() {
   return (
     <div className="container ben">
       {loader ? <Loader /> : null}
-      <h3>WELCOME TO UTTAR SEHAGORI PRIMARY SCHOOL</h3>
+      <h3>WELCOME TO {SCHOOLNAME}</h3>
       <h3>ADMISSION SECTION</h3>
       <button
         type="button"
