@@ -16,6 +16,8 @@ import { useGlobalContext } from "../../context/Store";
 import { DateValueToSring } from "../../modules/calculatefunctions";
 import { useRouter } from "next/navigation";
 import { SCHOOLNAME } from "@/modules/constants";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import DownloadAdmissionForm from "../DownloadAdmissionForm/page";
 export default function Admission() {
   const { setStateObject, setStateArray } = useGlobalContext();
   const router = useRouter();
@@ -1464,7 +1466,7 @@ export default function Admission() {
         <div className="my-4 mx-auto">
           <h6 className="text-danger ben">
             *** অনুগ্রহ করে ফর্ম ফিলাপের সময় আপনাকে প্রদত্ত ছাত্র/ছাত্রীর
-            প্রদত্ত অ্যাপ্লিকেশন নাম্বারটি নিজের কাছে রাখুন।
+            প্রদত্ত অ্যাপ্লিকেশন নাম্বারটি নিজের কাছে রাখুন। e.g. 20240828143615
           </h6>
           <div className="my-4 mx-auto d-flex justify-content-center align-items-center">
             <form method="post" className="mb-3 col-md-6">
@@ -1612,6 +1614,26 @@ export default function Admission() {
                   >
                     View
                   </button>
+
+                  <PDFDownloadLink
+                    document={
+                      <DownloadAdmissionForm data={searchedApplicationNo} />
+                    }
+                    fileName={`Apllication Form of ${searchedApplicationNo.student_eng_name}.pdf`}
+                    style={{
+                      textDecoration: "none",
+                      padding: "10px",
+                      color: "#fff",
+                      backgroundColor: "navy",
+                      border: "1px solid #4a4a4a",
+                      width: "40%",
+                      borderRadius: 10,
+                    }}
+                  >
+                    {({ blob, url, loading, error }) =>
+                      loading ? "Loading document..." : "Download"
+                    }
+                  </PDFDownloadLink>
                   <button
                     type="button"
                     className="btn btn-warning btn-sm m-2"
