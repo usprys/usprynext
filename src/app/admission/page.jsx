@@ -1631,7 +1631,7 @@ export default function Admission() {
                     }}
                   >
                     {({ blob, url, loading, error }) =>
-                      loading ? "Loading document..." : "Download"
+                      loading ? "Loading..." : "Download"
                     }
                   </PDFDownloadLink>
                   <button

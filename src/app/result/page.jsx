@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect } from "react";
-import resultData from "../../../db/resultp2.json";
+import resultData from "./resultp2.json";
 export default function Result() {
   useEffect(() => {}, []);
   return (
