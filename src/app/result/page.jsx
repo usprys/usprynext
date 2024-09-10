@@ -1,10 +1,40 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import resultData from "./resultp2.json";
+import Papa from "papaparse";
 export default function Result() {
-  useEffect(() => {}, []);
+  const [data, setData] = useState([]);
+  const [columnArray, setColumn] = useState([]);
+  const [values, setValues] = useState([]);
+  const handleFile = (e) => {
+    Papa.parse(e.target.files[0], {
+      header: true,
+      skipEmptyLines: true,
+      complete: (result) => {
+        const columnArray = [];
+        const valuesArray = [];
+        result.data.forEach((item) => {
+          columnArray.push(Object.keys(item));
+          valuesArray.push(Object.values(item));
+        });
+        setData(result.data);
+        setColumn(columnArray[0]);
+        setValues(valuesArray);
+      },
+    });
+  };
+
   return (
     <div className="container ben text-center">
+      <div class="input-group mb-3 col-md-6">
+        <input
+          type="file"
+          class="form-control"
+          id="inputGroupFile02"
+          accept=".csv,.json"
+          onChange={handleFile}
+        />
+      </div>
       <h1 className="text-center">UTTAR SEHAGORI PRIMARY SCHOOL</h1>
       <h1 className="text-center">Second Summative Examination 2024 Result</h1>
       <div className="d-flex">
