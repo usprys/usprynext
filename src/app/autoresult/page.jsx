@@ -15,9 +15,10 @@ export default function autoresult() {
         header: true,
         skipEmptyLines: false,
         complete: (results) => {
-          setData(results.data);
-          setColumsArray(Object.keys(results.data[0]));
-          setValues(results.data);
+          const parsedData = results.data;
+          setData(parsedData);
+          setColumsArray(Object.keys(parsedData[0]));
+          setValues(parsedData);
         },
       });
     } else if (file.type === "application/json") {
@@ -26,7 +27,7 @@ export default function autoresult() {
         let parsedData = JSON.parse(e.target.result);
         setData(parsedData);
         setColumsArray(Object.keys(parsedData[0]));
-        setValues(parsedData);
+        setValues(parsedData.slice(0, values.length - 1));
       };
       reader.readAsText(file);
     } else {
@@ -81,23 +82,14 @@ export default function autoresult() {
               </tr>
             </thead>
             <tbody>
-              {type == "application/json"
-                ? values.map((row, index) => (
-                    <tr key={JSON.stringify(row)}>
-                      <td>{index + 1}</td>
-                      {columsArray.map((col, i) => (
-                        <td key={i}>{row[col]}</td>
-                      ))}
-                    </tr>
-                  ))
-                : values.slice(0, values.length - 1).map((row, index) => (
-                    <tr key={JSON.stringify(row)}>
-                      <td>{index + 1}</td>
-                      {columsArray.map((col, i) => (
-                        <td key={i}>{row[col]}</td>
-                      ))}
-                    </tr>
+              {values.map((row, index) => (
+                <tr key={JSON.stringify(row)}>
+                  <td>{index + 1}</td>
+                  {columsArray.map((col, i) => (
+                    <td key={i}>{row[col]}</td>
                   ))}
+                </tr>
+              ))}
             </tbody>
           </table>
         )}

@@ -5,7 +5,8 @@ export const NEXTDA = 0.14;
 export const INCREAMENT = 0.06;
 export const HRA = 0.12;
 export const BONUS = 5800;
-
+export const PP_STUDENTS = 6;
+export const PRIMARY_STUDENTS = 40;
 export const SCHOOLNAME = "UTTAR SEHAGORI PRIMARY SCHOOL";
 export const SCHOOLBENGALINAME = "উত্তর সেহাগড়ী প্রাথমিক বিদ্যালয়";
 export const SCHOOLADDRESS =

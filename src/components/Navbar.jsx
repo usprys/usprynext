@@ -382,6 +382,15 @@ export default function Navbar() {
               Auto Result
             </Link>
           </li>
+          <li className="nav-item">
+            <Link
+              className="nav-link"
+              href="/mdmdata"
+              onClick={handleNavCollapse}
+            >
+              MDM Data
+            </Link>
+          </li>
 
           <li className="nav-item">
             <Link
