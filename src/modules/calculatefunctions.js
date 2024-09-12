@@ -699,3 +699,22 @@ export const setInputNumberMaxLength = (value, maxLength) => {
     }
   }
 };
+
+export const btnArray = [
+  { label: "Add", color: "success" },
+  { label: "Edit", color: "warning" },
+  { label: "Delete", color: "danger" },
+  { label: "View", color: "info" },
+  { label: "Print", color: "primary" },
+  { label: "Export", color: "dark" },
+  { label: "Import", color: "light" },
+  { label: "Save", color: "secondary" },
+  { label: "Reset", color: "light" },
+  { label: "Search", color: "info" },
+  { label: "Refresh", color: "warning" },
+  { label: "Download", color: "primary" },
+  { label: "Upload", color: "success" },
+  { label: "Send", color: "info" },
+  { label: "Receive", color: "warning" },
+  { label: "Forward", color: "danger" },
+];

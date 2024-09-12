@@ -38,3 +38,5 @@ next-env.d.ts
 #localFiles
 .env
 /db
+/files
+service_key.json

@@ -1,5 +1,10 @@
 "use client";
-import { PP_STUDENTS, PRIMARY_STUDENTS, SCHOOLNAME } from "@/modules/constants";
+import {
+  MDM_COST,
+  PP_STUDENTS,
+  PRIMARY_STUDENTS,
+  SCHOOLNAME,
+} from "@/modules/constants";
 import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { firestore } from "../../context/FirbaseContext";
@@ -22,13 +27,18 @@ import {
   todayInString,
   uniqArray,
 } from "@/modules/calculatefunctions";
+import { useRouter } from "next/navigation";
+import { useGlobalContext } from "@/context/Store";
 export default function MDMData() {
+  const { setStateObject } = useGlobalContext();
+  const router = useRouter();
   const [date, setDate] = useState(todayInString());
   const [pp, setPp] = useState("");
   const [pry, setPry] = useState("");
   const [showEntry, setShowEntry] = useState(false);
   const [showUpdate, setShowUpdate] = useState(false);
   const [showMonthlyReport, setShowMonthlyReport] = useState(false);
+  const [showRiceData, setShowRiceData] = useState(false);
   const [errPP, setErrPP] = useState("");
   const [errPry, setErrPry] = useState("");
   const [docId, setDocId] = useState(todayInString());
@@ -44,6 +54,29 @@ export default function MDMData() {
   const [joiningMonths, setJoiningMonths] = useState([]);
   const [serviceArray, setServiceArray] = useState([]);
   const [showDataTable, setShowDataTable] = useState(false);
+  const [riceData, setRiceData] = useState([]);
+  const [filteredRiceData, setFilteredRiceData] = useState([]);
+  const [riceOB, setRiceOB] = useState(0);
+  const [riceGiven, setRiceGiven] = useState(0);
+  const [totalRiceGiven, setTotalRiceGiven] = useState(0);
+  const [prevMonthCost, setPrevMonthCost] = useState({});
+  const [riceExpend, setRiceExpend] = useState("");
+  const [riceCB, setRiceCB] = useState(0);
+  const [errRice, setErrRice] = useState("");
+  const [showRiceBalance, setShowRiceBalance] = useState(false);
+  const [showSubmitMonthlyReport, setShowSubmitMonthlyReport] = useState(false);
+
+  const [monthToSubmit, setMonthToSubmit] = useState("");
+  const [financialYear, setFinancialYear] = useState("");
+  const [monthWorkingDays, setMonthWorkingDays] = useState(0);
+  const [monthPPTotal, setMonthPPTotal] = useState(0);
+  const [monthPRYTotal, setMonthPRYTotal] = useState(0);
+  const [monthTotalCost, setMonthTotalCost] = useState(0);
+  const [monthRiceOB, setMonthRiceOB] = useState(0);
+  const [monthRiceGiven, setMonthRiceGiven] = useState(0);
+  const [monthRiceConsunption, setMonthRiceConsunption] = useState(0);
+  const [monthRiceCB, setMonthRiceCB] = useState(0);
+  const [monthYearID, setMonthYearID] = useState("");
   const submitData = async () => {
     if (validForm()) {
       setLoader(true);
@@ -55,6 +88,7 @@ export default function MDMData() {
       })
         .then(() => {
           toast.success("Data submitted successfully");
+          getMainData();
           setPp("");
           setPry("");
           setDate(todayInString());
@@ -72,38 +106,37 @@ export default function MDMData() {
   };
 
   const validForm = () => {
-    let isValid = false;
+    let isValid = true;
     if (pp.length === 0) {
       setErrPP("PP Number is required");
+      isValid = false;
     } else {
       setErrPP("");
+      isValid = true;
     }
     if (pry.length === 0) {
       setErrPry("PRY Number is required");
+      isValid = false;
     } else {
       setErrPry("");
-    }
-    if (errPP.length === 0 && errPry.length === 0) {
       isValid = true;
     }
+
     return isValid;
   };
 
   const searchTodaysData = async () => {
-    setLoader(true);
-    const ref = doc(firestore, "mdmData", docId);
-    try {
-      const snap = await getDoc(ref);
-      const data = snap.data();
+    const todaysData = allEnry.filter(
+      (entry) => entry.date === todayInString()
+    );
+    if (todaysData.length > 0) {
+      const data = todaysData[0];
       setPp(data.pp);
       setPry(data.pry);
       setDate(getCurrentDateInput(data.date));
       setDocId(data.date);
-      setLoader(false);
-      setShowEntry(false);
       setShowUpdate(true);
-      setShowMonthlyReport(false);
-    } catch (error) {
+    } else {
       toast.error("Todays Enry Not Done Yet!", {
         position: "top-right",
         autoClose: 1500,
@@ -113,21 +146,26 @@ export default function MDMData() {
         progress: undefined,
         theme: "light",
       });
-      setLoader(false);
     }
+    setShowDataTable(false);
+    setShowMonthSelection(false);
+    setShowEntry(false);
+    setShowMonthlyReport(false);
+    setShowRiceData(false);
   };
   const updateData = async () => {
     if (validForm()) {
       setLoader(true);
       try {
-        const docRef = doc(firestore, "mdmData", date);
+        const docRef = doc(firestore, "mdmData", docId);
         await updateDoc(docRef, {
           pp: parseInt(pp),
           pry: parseInt(pry),
-          date: date,
+          date: docId,
         })
           .then(() => {
             toast.success("Data updated successfully");
+            getMainData();
             setPp("");
             setPry("");
             setDate(todayInString());
@@ -174,6 +212,43 @@ export default function MDMData() {
     }
   };
 
+  const getMainData = async () => {
+    setLoader(true);
+    const querySnapshot = await getDocs(
+      query(collection(firestore, "mdmData"))
+    );
+    const datas = querySnapshot.docs
+      .map((doc) => ({
+        // doc.data() is never undefined for query doc snapshots
+        ...doc.data(),
+        id: doc.id,
+      }))
+      .sort(
+        (a, b) =>
+          Date.parse(getCurrentDateInput(a.date)) -
+          Date.parse(getCurrentDateInput(b.date))
+      );
+    setLoader(false);
+    setAllEnry(datas);
+  };
+  const getRiceData = async () => {
+    setLoader(true);
+    const querySnapshot = await getDocs(query(collection(firestore, "rice")));
+    const datas = querySnapshot.docs
+      .map((doc) => ({
+        // doc.data() is never undefined for query doc snapshots
+        ...doc.data(),
+        id: doc.id,
+      }))
+      .sort(
+        (a, b) =>
+          Date.parse(getCurrentDateInput(a.date)) -
+          Date.parse(getCurrentDateInput(b.date))
+      );
+    setLoader(false);
+    setRiceData(datas);
+    setRiceOB(datas[datas.length - 1].riceCB);
+  };
   const getData = async () => {
     setLoader(true);
     const querySnapshot = await getDocs(
@@ -210,11 +285,13 @@ export default function MDMData() {
     });
     setPpTotalMeal(ppTotal);
     setPryTotalMeal(pryTotal);
+
     setLoader(false);
     setAllEnry(array);
     setFilteredData(array);
     setShowEntry(false);
     setShowUpdate(false);
+    setShowRiceData(false);
     setShowMonthlyReport(true);
   };
 
@@ -248,7 +325,7 @@ export default function MDMData() {
       setShowMonthSelection(true);
       setFilteredData(x);
       setMoreFilteredData(x);
-      setJoiningMonths(uniqArray(y).sort((a, b) => a.rank - b.rank));
+      setJoiningMonths(uniqArray(y));
     } else {
       setFilteredData([]);
       setSelectedYear("");
@@ -256,6 +333,7 @@ export default function MDMData() {
   };
   const handleMonthChange = (month) => {
     let x = [];
+    let y = [];
     allEnry.map((entry) => {
       const joiningYear = entry.date.split("-")[2];
       const joiningMonth = entry.date.split("-")[1];
@@ -263,7 +341,38 @@ export default function MDMData() {
         return x.push(entry);
       }
     });
+    riceData.map((entry) => {
+      const joiningYear = entry.date.split("-")[2];
+      const joiningMonth = entry.date.split("-")[1];
+      if (joiningYear === selectedYear && joiningMonth === month.index) {
+        return y.push(entry);
+      }
+    });
+
+    if (month.rank < 4) {
+      setFinancialYear(`${parseInt(selectedYear) - 1}-${selectedYear}`);
+    } else {
+      setFinancialYear(`${selectedYear}-${parseInt(selectedYear) + 1}`);
+    }
+
     setFilteredData(x);
+    setFilteredRiceData(
+      y.sort(
+        (a, b) =>
+          Date.parse(getCurrentDateInput(a.date)) -
+          Date.parse(getCurrentDateInput(b.date))
+      )
+    );
+    let riceGiven = 0;
+    let thisMonthRiceData = y.sort(
+      (a, b) =>
+        Date.parse(getCurrentDateInput(a.date)) -
+        Date.parse(getCurrentDateInput(b.date))
+    );
+    y.map((entry) => {
+      riceGiven += entry.riceGiven;
+    });
+    setTotalRiceGiven(riceGiven);
     let ppTotal = 0;
     let pryTotal = 0;
     x.map((entry) => {
@@ -272,8 +381,129 @@ export default function MDMData() {
     });
     setPpTotalMeal(ppTotal);
     setPryTotalMeal(pryTotal);
+    setMonthYearID(`${month.monthName}-${selectedYear}`);
+    setMonthToSubmit(month.monthName);
+    setMonthWorkingDays(x.length);
+    setMonthPPTotal(ppTotal);
+    setMonthPRYTotal(pryTotal);
+    setMonthTotalCost(Math.round((ppTotal + pryTotal) * MDM_COST));
+    setMonthRiceOB(thisMonthRiceData[0]?.riceOB);
+    setMonthRiceCB(thisMonthRiceData[0]?.riceCB);
+    setMonthRiceGiven(riceGiven);
+    setMonthRiceCB(thisMonthRiceData[thisMonthRiceData.length - 1]?.riceCB);
+    setMonthRiceConsunption(
+      thisMonthRiceData[0]?.riceOB +
+        riceGiven -
+        thisMonthRiceData[thisMonthRiceData.length - 1]?.riceCB
+    );
     setShowDataTable(true);
     setMonthText(month.monthName);
+  };
+
+  const submitRice = async () => {
+    setLoader(true);
+    try {
+      await setDoc(doc(firestore, "rice", date), {
+        id: date,
+        date: date,
+        riceOB: riceOB,
+        riceGiven: riceGiven,
+        riceExpend: riceExpend,
+        riceCB: riceOB - riceExpend,
+      })
+        .then(() => {
+          toast.success("Rice Data added successfully");
+          setRiceCB(0);
+          setRiceGiven(0);
+          setRiceCB(0);
+          setRiceOB(riceOB - riceExpend);
+          getRiceData();
+          setDocId(todayInString());
+          setDate(todayInString());
+          setShowRiceData(false);
+          setShowEntry(false);
+          setShowDataTable(false);
+          setShowMonthlyReport(false);
+          setShowMonthSelection(false);
+          setLoader(false);
+        })
+        .catch((e) => {
+          console.log(e);
+          setLoader(false);
+          toast.error("Something went Wrong!", {
+            position: "top-right",
+            autoClose: 1500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        });
+    } catch (e) {
+      console.log(e);
+      setLoader(false);
+      toast.error("Something went Wrong!", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
+
+  const submitMonthlyData = async () => {
+    setLoader(true);
+    try {
+      await setDoc(doc(firestore, "mothlyMDMData", monthYearID), {
+        id: monthYearID,
+        month: monthToSubmit,
+        year: selectedYear,
+        financialYear: financialYear,
+        worrkingDays: monthWorkingDays,
+        ppTotal: monthPPTotal,
+        pryTotal: monthPRYTotal,
+        totalCost: monthTotalCost,
+        riceOB: monthRiceOB,
+        riceCB: monthRiceCB,
+        riceConsunption: monthRiceConsunption,
+        riceGiven: monthRiceGiven,
+        date: todayInString(),
+      })
+        .then(() => {
+          toast.success("Monthly MDM Data Submitted successfully");
+          setLoader(false);
+          setShowSubmitMonthlyReport(false);
+        })
+        .catch((e) => {
+          console.log(e);
+          setLoader(false);
+          toast.error("Something went Wrong!", {
+            position: "top-right",
+            autoClose: 1500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        });
+    } catch (e) {
+      console.log(e);
+      setLoader(false);
+      toast.error("Something went Wrong!", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
   };
 
   useEffect(() => {}, [
@@ -284,8 +514,15 @@ export default function MDMData() {
     date,
     ppTotalMeal,
     pryTotalMeal,
+    docId,
+    riceOB,
+    monthYearID,
+    financialYear,
   ]);
-  useEffect(() => {}, []);
+  useEffect(() => {
+    getMainData();
+    getRiceData();
+  }, []);
 
   return (
     <div className="container">
@@ -296,16 +533,42 @@ export default function MDMData() {
         type="button"
         className="btn btn-primary m-1"
         onClick={() => {
-          setShowEntry(true);
-          setShowUpdate(false);
-          setShowMonthlyReport(false);
-          setPp("");
-          setPry("");
-          setErrPP("");
-          setErrPry("");
-          setDate(todayInString());
-          setShowDataTable(false);
-          setShowMonthSelection(false);
+          allEnry.map((entry) => {
+            if (entry.date === todayInString()) {
+              toast.error("Todays Entry Already Done!", {
+                position: "top-right",
+                autoClose: 1500,
+                hideProgressBar: false,
+                closeOnClick: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+              });
+              setShowEntry(true);
+              setShowUpdate(false);
+              setShowMonthlyReport(false);
+              setPp("");
+              setPry("");
+              setErrPP("");
+              setErrPry("");
+              setDate(todayInString());
+              setShowDataTable(false);
+              setShowMonthSelection(false);
+              setShowRiceData(false);
+            } else {
+              setShowEntry(true);
+              setShowUpdate(false);
+              setShowMonthlyReport(false);
+              setPp("");
+              setPry("");
+              setErrPP("");
+              setErrPry("");
+              setDate(todayInString());
+              setShowDataTable(false);
+              setShowMonthSelection(false);
+              setShowRiceData(false);
+            }
+          });
         }}
       >
         Coverage Entry
@@ -315,8 +578,6 @@ export default function MDMData() {
         className="btn btn-dark m-1"
         onClick={() => {
           searchTodaysData();
-          setShowDataTable(false);
-          setShowMonthSelection(false);
         }}
       >
         Coverage Update
@@ -324,21 +585,31 @@ export default function MDMData() {
       <button
         type="button"
         className="btn btn-success m-1"
-        onClick={() => {
-          if (allEnry.length === 0) {
-            getData();
-          } else {
-            calledData(allEnry);
-          }
-        }}
+        onClick={() => calledData(allEnry)}
       >
         Monthly Report
+      </button>
+      <button
+        type="button"
+        className="btn btn-info m-1"
+        onClick={() => {
+          setShowRiceData(true);
+          setShowMonthlyReport(false);
+          setShowDataTable(false);
+          setShowMonthSelection(false);
+          setShowEntry(false);
+          setShowUpdate(false);
+          setDate(todayInString());
+          setDocId(todayInString());
+        }}
+      >
+        Rice Data
       </button>
       {showEntry && (
         <form>
           <h4 className="my-3">Coverage Entry</h4>
-          <div className="form-group">
-            <label>Date</label>
+          <div className="form-group m-2">
+            <label className="m-2">Date</label>
             <input
               type="date"
               className="form-control"
@@ -346,10 +617,10 @@ export default function MDMData() {
               onChange={(e) => setDate(getSubmitDateInput(e.target.value))}
             />
           </div>
-          <div className="form-group">
-            <label>PP</label>
+          <div className="form-group m-2">
+            <label className="m-2">PP</label>
             <input
-              type="text"
+              type="number"
               className="form-control"
               placeholder={`Max Limit: ${PP_STUDENTS}`}
               value={pp}
@@ -364,10 +635,10 @@ export default function MDMData() {
             />
             {errPP && <p className="text-danger">{errPP}</p>}
           </div>
-          <div className="form-group">
-            <label>Primary</label>
+          <div className="form-group m-2">
+            <label className="m-2">Primary</label>
             <input
-              type="text"
+              type="number"
               className="form-control"
               placeholder={`Max Limit: ${PRIMARY_STUDENTS}`}
               value={pry}
@@ -407,19 +678,42 @@ export default function MDMData() {
       {showUpdate && (
         <form>
           <h4 className="my-3">Coverage Update</h4>
-          <div className="form-group">
-            <label>Date</label>
+          <div className="form-group m-2">
+            <label className="m-2">Date</label>
             <input
               type="date"
               className="form-control"
               defaultValue={date}
-              onChange={(e) => setDate(getSubmitDateInput(e.target.value))}
+              onChange={(e) => {
+                setDate(getSubmitDateInput(e.target.value));
+                setDocId(getSubmitDateInput(e.target.value));
+                const filteredData = allEnry.filter(
+                  (entry) => entry.date === getSubmitDateInput(e.target.value)
+                );
+                if (filteredData.length > 0) {
+                  const selectedDateData = filteredData[0];
+                  setPp(selectedDateData.pp);
+                  setPry(selectedDateData.pry);
+                } else {
+                  setPp("");
+                  setPry("");
+                  toast.error("No Data Found on selected Date!", {
+                    position: "top-right",
+                    autoClose: 1500,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                  });
+                }
+              }}
             />
           </div>
-          <div className="form-group">
-            <label>PP</label>
+          <div className="form-group m-2">
+            <label className="m-2">PP</label>
             <input
-              type="text"
+              type="number"
               className="form-control"
               placeholder={`Max Limit: ${PP_STUDENTS}`}
               value={pp}
@@ -434,10 +728,10 @@ export default function MDMData() {
             />
             {errPP && <p className="text-danger">{errPP}</p>}
           </div>
-          <div className="form-group">
-            <label>Primary</label>
+          <div className="form-group m-2">
+            <label className="m-2">Primary</label>
             <input
-              type="text"
+              type="number"
               className="form-control"
               placeholder={`Max Limit: ${PRIMARY_STUDENTS}`}
               value={pry}
@@ -494,10 +788,10 @@ export default function MDMData() {
               <option className="text-center text-primary" value="">
                 Select Joining Year
               </option>
-              {serviceArray.map((el) => (
+              {serviceArray.map((el, i) => (
                 <option
                   className="text-center text-success text-wrap"
-                  key={el.id}
+                  key={i}
                   value={el}
                 >
                   {"Year - " + el}
@@ -585,6 +879,27 @@ export default function MDMData() {
                 >
                   Download {monthText} Month's MDM Data
                 </button>
+                <button
+                  type="button"
+                  className="btn btn-sm m-3 btn-success"
+                  onClick={() => {
+                    router.push("/MDMmonthlyReport");
+                    setStateObject({
+                      month: monthText,
+                      year: selectedYear,
+                      ppTotalMeal: ppTotalMeal,
+                      pryTotalMeal: pryTotalMeal,
+                      totalMeal: ppTotalMeal + pryTotalMeal,
+                      totalDays: filteredData.length,
+                      riceOB: filteredRiceData[0].riceOB,
+                      riceCB:
+                        filteredRiceData[filteredRiceData.length - 1].riceCB,
+                      riceGiven: totalRiceGiven,
+                    });
+                  }}
+                >
+                  Generate Monthly Report
+                </button>
               </div>
               <table
                 className="table table-responsive table-bordered table-striped"
@@ -597,6 +912,7 @@ export default function MDMData() {
               >
                 <thead>
                   <tr>
+                    <th>Day</th>
                     <th>Date</th>
                     <th>PP</th>
                     <th>Primary</th>
@@ -604,9 +920,10 @@ export default function MDMData() {
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredData.map((entry) => {
+                  {filteredData.map((entry, i) => {
                     return (
-                      <tr key={entry.id}>
+                      <tr key={i}>
+                        <td>Day-{i + 1}</td>
                         <td>{entry.date}</td>
                         <td>{entry.pp}</td>
                         <td>{entry.pry}</td>
@@ -618,6 +935,7 @@ export default function MDMData() {
                               setPp(entry.pp);
                               setPry(entry.pry);
                               setDate(getCurrentDateInput(entry.date));
+
                               setDocId(entry.date);
                               setLoader(false);
                               setShowEntry(false);
@@ -635,14 +953,263 @@ export default function MDMData() {
                   })}
                   <tr>
                     <th>Total</th>
+                    <th>
+                      {filteredData.length > 1
+                        ? `${filteredData.length} Days`
+                        : `${filteredData.length} Day`}
+                    </th>
                     <th>{ppTotalMeal}</th>
                     <th>{pryTotalMeal}</th>
-                    <th>-</th>
+                    <th style={{ width: "30%", verticalAlign: "center" }}>
+                      <p>Total Meal- {ppTotalMeal + pryTotalMeal}</p>
+                      <p>
+                        MDM Cost ={" "}
+                        {`${ppTotalMeal} X ₹${MDM_COST} + ${pryTotalMeal} X ₹${MDM_COST} = `}
+                        ₹{monthTotalCost}
+                      </p>
+                    </th>
                   </tr>
                 </tbody>
               </table>
+              {!showSubmitMonthlyReport && (
+                <button
+                  type="button"
+                  className="btn btn-dark"
+                  onClick={() => setShowSubmitMonthlyReport(true)}
+                >
+                  Submit Monthly Report
+                </button>
+              )}
+              {showSubmitMonthlyReport && (
+                <div className="my-2">
+                  <h4 className="text-primary">Submit Monthly Report</h4>
+                  <div className="col-md-6 mx-auto my-2">
+                    <form action="">
+                      <div className="form-group m-2">
+                        <label className="m-2">Month Name</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder={`Enter Month Name`}
+                          value={monthToSubmit}
+                          onChange={(e) => {
+                            setMonthToSubmit(e.target.value);
+                          }}
+                        />
+                      </div>
+                      <div className="form-group m-2">
+                        <label className="m-2">Total Working Days</label>
+                        <input
+                          type="number"
+                          className="form-control"
+                          placeholder={`Enter Total Working Days`}
+                          value={monthWorkingDays}
+                          onChange={(e) => {
+                            if (e.target.value !== "") {
+                              setMonthWorkingDays(parseInt(e.target.value));
+                            } else {
+                              setMonthWorkingDays("");
+                            }
+                          }}
+                        />
+                      </div>
+                      <div className="form-group m-2">
+                        <label className="m-2">Total PP Meals</label>
+                        <input
+                          type="number"
+                          className="form-control"
+                          placeholder={`Enter Total Working Days`}
+                          value={monthPPTotal}
+                          onChange={(e) => {
+                            if (e.target.value !== "") {
+                              setMonthPPTotal(parseInt(e.target.value));
+                            } else {
+                              setMonthPPTotal("");
+                            }
+                          }}
+                        />
+                      </div>
+                      <div className="form-group m-2">
+                        <label className="m-2">Total Primary Meals</label>
+                        <input
+                          type="number"
+                          className="form-control"
+                          placeholder={`Enter Total Working Days`}
+                          value={monthPRYTotal}
+                          onChange={(e) => {
+                            if (e.target.value !== "") {
+                              setMonthPRYTotal(parseInt(e.target.value));
+                            } else {
+                              setMonthPRYTotal("");
+                            }
+                          }}
+                        />
+                      </div>
+                      <div className="form-group m-2">
+                        <label className="m-2">Total MDM Cost</label>
+                        <input
+                          type="number"
+                          className="form-control"
+                          placeholder={`Enter Total Working Days`}
+                          value={monthTotalCost}
+                          onChange={(e) => {
+                            if (e.target.value !== "") {
+                              setMonthTotalCost(parseInt(e.target.value));
+                            } else {
+                              setMonthTotalCost("");
+                            }
+                          }}
+                        />
+                      </div>
+                      <div className="form-group m-2">
+                        <label className="m-2">Rice Opening Balance</label>
+                        <input
+                          type="number"
+                          className="form-control"
+                          placeholder={`Enter Rice Opening Balance`}
+                          value={monthRiceOB}
+                          onChange={(e) => {
+                            if (e.target.value !== "") {
+                              setMonthRiceOB(parseInt(e.target.value));
+                            } else {
+                              setMonthRiceOB("");
+                            }
+                          }}
+                        />
+                      </div>
+                      <div className="form-group m-2">
+                        <label className="m-2">Rice Received</label>
+                        <input
+                          type="number"
+                          className="form-control"
+                          placeholder={`Enter Rice Received`}
+                          value={monthRiceGiven}
+                          onChange={(e) => {
+                            if (e.target.value !== "") {
+                              setMonthRiceGiven(parseInt(e.target.value));
+                            } else {
+                              setMonthRiceGiven("");
+                            }
+                          }}
+                        />
+                      </div>
+                      <div className="form-group m-2">
+                        <label className="m-2">Rice Consumption</label>
+                        <input
+                          type="number"
+                          className="form-control"
+                          placeholder={`Enter Rice Consumption`}
+                          value={monthRiceConsunption}
+                          onChange={(e) => {
+                            if (e.target.value !== "") {
+                              setMonthRiceConsunption(parseInt(e.target.value));
+                            } else {
+                              setMonthRiceConsunption("");
+                            }
+                          }}
+                        />
+                      </div>
+                      <div className="form-group m-2">
+                        <label className="m-2">Rice Closing Balance</label>
+                        <input
+                          type="number"
+                          className="form-control"
+                          placeholder={`Enter Rice Closing Balance`}
+                          value={monthRiceCB}
+                          onChange={(e) => {
+                            if (e.target.value !== "") {
+                              setMonthRiceCB(parseInt(e.target.value));
+                            } else {
+                              setMonthRiceCB("");
+                            }
+                          }}
+                        />
+                      </div>
+                      <button
+                        className="btn btn-success"
+                        type="submit"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          submitMonthlyData();
+                        }}
+                      >
+                        Submit
+                      </button>
+                    </form>
+                  </div>
+                  <button
+                    className="btn btn-danger"
+                    type="button"
+                    onClick={() => setShowSubmitMonthlyReport(false)}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              )}
             </>
           )}
+        </div>
+      )}
+      {showRiceData && (
+        <div className="my-3">
+          <h4 className="my-3">Rice Data</h4>
+          <form>
+            <div className="form-group m-2">
+              <label className="m-2">Date</label>
+              <input
+                type="date"
+                className="form-control"
+                defaultValue={getCurrentDateInput(date)}
+                onChange={(e) => setDate(getSubmitDateInput(e.target.value))}
+              />
+            </div>
+
+            <h4 className="m-2 text-success">
+              Rice Opening Balance {riceOB} Kg.
+            </h4>
+
+            <div className="form-group m-2">
+              <label className="m-2">Rice Expenditure (in Kg.)</label>
+              <input
+                type="number"
+                className="form-control"
+                placeholder={`Enter Rice Expenditure`}
+                value={riceExpend}
+                onChange={(e) => {
+                  if (e.target.value !== "") {
+                    setRiceExpend(parseInt(e.target.value));
+                    setShowRiceBalance(true);
+                  } else {
+                    setRiceExpend("");
+                    setShowRiceBalance(false);
+                  }
+                }}
+              />
+              {errRice && (
+                <p className="text-danger m-2">Please Enter Rice Expenditure</p>
+              )}
+              {showRiceBalance && (
+                <h4 className="text-info m-2">
+                  Closing Balance {riceOB - riceExpend} Kg.
+                </h4>
+              )}
+            </div>
+            <button
+              type="submit"
+              className="btn btn-success"
+              onClick={(e) => {
+                e.preventDefault();
+                if (riceExpend === 0 || riceExpend === "") {
+                  setErrRice("Please Enter Rice Expenditure");
+                  return;
+                }
+                setErrRice("");
+                submitRice();
+              }}
+            >
+              Submit
+            </button>
+          </form>
         </div>
       )}
     </div>
