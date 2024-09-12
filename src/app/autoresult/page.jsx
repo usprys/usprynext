@@ -24,7 +24,7 @@ export default function autoresult() {
     } else if (file.type === "application/json") {
       let reader = new FileReader();
       reader.onload = function (e) {
-        let parsedData = JSON.parse(e.target.result);
+        const parsedData = JSON.parse(e.target.result);
         setData(parsedData);
         setColumsArray(Object.keys(parsedData[0]));
         setValues(parsedData.slice(0, values.length - 1));
@@ -38,8 +38,8 @@ export default function autoresult() {
   useEffect(() => {}, [data, columsArray, values]);
   return (
     <div className="container">
-      <div className="mx-auto">
-        <div className="input-group mb-3 col-md-6">
+      <div className="mx-auto col-md-6">
+        <div className="input-group mb-3">
           <input
             type="file"
             className="form-control"
@@ -64,35 +64,45 @@ export default function autoresult() {
             Reset
           </button>
         )}
-        {data.length > 0 && (
-          <table
-            className="table table-bordered"
-            style={{
-              border: "1px solid",
-              borderCollapse: "collapse",
-              margin: 5,
-            }}
-          >
-            <thead>
-              <tr>
-                <th>Sl</th>
-                {columsArray.map((col) => (
-                  <th key={col}>{col}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {values.map((row, index) => (
-                <tr key={JSON.stringify(row)}>
-                  <td>{index + 1}</td>
-                  {columsArray.map((col, i) => (
-                    <td key={i}>{row[col]}</td>
+        <div className="mx-auto my-3">
+          {data.length > 0 && (
+            <table
+              className="table table-bordered"
+              style={{
+                border: "1px solid",
+                borderCollapse: "collapse",
+              }}
+            >
+              <thead>
+                <tr>
+                  <th>Sl</th>
+                  {columsArray.map((col) => (
+                    <th key={col}>{col}</th>
                   ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
+              </thead>
+              <tbody>
+                {type == "application/json"
+                  ? values.map((row, index) => (
+                      <tr key={JSON.stringify(row)}>
+                        <td>{index + 1}</td>
+                        {columsArray.map((col, i) => (
+                          <td key={i}>{row[col]}</td>
+                        ))}
+                      </tr>
+                    ))
+                  : values.slice(0, values.length - 1).map((row, index) => (
+                      <tr key={JSON.stringify(row)}>
+                        <td>{index + 1}</td>
+                        {columsArray.map((col, i) => (
+                          <td key={i}>{row[col]}</td>
+                        ))}
+                      </tr>
+                    ))}
+              </tbody>
+            </table>
+          )}
+        </div>
       </div>
     </div>
   );
