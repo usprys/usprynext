@@ -1,0 +1,90 @@
+[
+  {
+    "id": "April-2024",
+    "accountName": "MDM",
+    "accountNumber": "3266513124",
+    "purpose": "April MDM",
+    "amount": 7190,
+    "date": "19-04-2024",
+    "type": "DEBIT",
+    "openingBalance": 28509.94,
+    "closingBalance": 21319.94
+  },
+  {
+    "id": "CASH-DEPOSIT-2024",
+    "accountName": "VEC",
+    "accountNumber": "11875422798",
+    "purpose": "CASH RETURN",
+    "amount": 7000,
+    "date": "19-04-2024",
+    "type": "CREDIT",
+    "openingBalance": 705.41,
+    "closingBalance": 7705.41
+  },
+  {
+    "id": "Interest-June-2024",
+    "accountName": "MDM",
+    "accountNumber": "3266513124",
+    "purpose": "Interest",
+    "amount": 158,
+    "date": "25-06-2024",
+    "type": "CREDIT",
+    "openingBalance": 21319.94,
+    "closingBalance": 21477.94
+  },
+  {
+    "id": "MDM-Cost-June-2024",
+    "accountName": "MDM",
+    "accountNumber": "3266513124",
+    "purpose": "April To June MDM Cost",
+    "amount": 11832,
+    "date": "27-06-2024",
+    "type": "CREDIT",
+    "openingBalance": 21477.94,
+    "closingBalance": 33309.94
+  },
+  {
+    "id": "June-2024",
+    "accountName": "MDM",
+    "accountNumber": "3266513124",
+    "purpose": "June MDM",
+    "amount": 6721,
+    "date": "28-06-2024",
+    "type": "DEBIT",
+    "openingBalance": 33309.94,
+    "closingBalance": 26588.94
+  },
+  {
+    "id": "July-2024",
+    "accountName": "MDM",
+    "accountNumber": "3266513124",
+    "purpose": "July MDM",
+    "amount": 8857,
+    "date": "31-07-2024",
+    "type": "DEBIT",
+    "openingBalance": 26588.94,
+    "closingBalance": 17731.94
+  },
+  {
+    "id": "August-2024",
+    "accountName": "MDM",
+    "accountNumber": "3266513124",
+    "purpose": "August MDM",
+    "amount": 5619,
+    "date": "30-08-2024",
+    "type": "DEBIT",
+    "openingBalance": 17731.94,
+    "closingBalance": 12112.94
+  },
+  {
+    "id": "MDM-Cost-September-2024",
+    "accountName": "MDM",
+    "accountNumber": "3266513124",
+    "purpose": "July to September MDM Cost",
+    "amount": 10300,
+    "date": "12-09-2024",
+    "type": "CREDIT",
+    "openingBalance": 12112.94,
+    "closingBalance": 22412.94
+  }
+]

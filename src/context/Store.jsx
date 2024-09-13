@@ -40,6 +40,10 @@ const GlobalContext = createContext({
   setNoticeUpdateTime: () => "",
   userUpdateTime: "",
   setUserUpdateTime: () => "",
+  accountState: [],
+  setAccountState: () => [],
+  transactionState: [],
+  setTransactionState: () => [],
 });
 export const GlobalContextProvider = ({ children }) => {
   const [state, setState] = useState({
@@ -64,6 +68,8 @@ export const GlobalContextProvider = ({ children }) => {
   const [slideUpdateTime, setSlideUpdateTime] = useState(Date.now() - 1000);
   const [noticeUpdateTime, setNoticeUpdateTime] = useState(Date.now() - 1000);
   const [userUpdateTime, setUserUpdateTime] = useState(Date.now() - 1000);
+  const [accountState, setAccountState] = useState([]);
+  const [transactionState, setTransactionState] = useState([]);
 
   return (
     <GlobalContext.Provider
@@ -94,6 +100,10 @@ export const GlobalContextProvider = ({ children }) => {
         setNoticeUpdateTime,
         userUpdateTime,
         setUserUpdateTime,
+        accountState,
+        setAccountState,
+        transactionState,
+        setTransactionState,
       }}
     >
       <FirebaseProvider>{children}</FirebaseProvider>
