@@ -28,6 +28,7 @@ import {
   getCurrentDateInput,
   getSubmitDateInput,
   monthNamesWithIndex,
+  months,
   todayInString,
   uniqArray,
 } from "@/modules/calculatefunctions";
@@ -48,10 +49,41 @@ export default function MDMmonthlyReport() {
     riceConsunption: "",
     riceGiven: "",
   });
+  const {
+    transactionState,
+    setTransactionState,
+    accountState,
+    setAccountState,
+    stateObject,
+    setStateObject,
+  } = useGlobalContext();
   const router = useRouter();
   const [loader, setLoader] = useState(false);
   const [allEnry, setAllEnry] = useState([]);
   const [showData, setShowData] = useState(false);
+  const [allTransactions, setAllTransactions] = useState([]);
+  const [thisTransaction, setThisTransaction] = useState({
+    accountName: "",
+    accountNumber: "",
+    amount: "",
+    purpose: "",
+    type: "",
+    date: "",
+    id: "",
+    openingBalance: "",
+    closingBalance: "",
+  });
+  const [preViousMonthTransaction, setPreViousMonthTransaction] = useState({
+    accountName: "",
+    accountNumber: "",
+    amount: "",
+    purpose: "",
+    type: "",
+    date: "",
+    id: "",
+    openingBalance: "",
+    closingBalance: "",
+  });
   const getMonthlyData = async () => {
     setLoader(true);
     const querySnapshot = await getDocs(
@@ -71,6 +103,36 @@ export default function MDMmonthlyReport() {
     setLoader(false);
     setAllEnry(data);
   };
+
+  const getTransactions = async () => {
+    setLoader(true);
+    const querySnapshot = await getDocs(
+      query(collection(firestore, "transactions"))
+    );
+    const data = querySnapshot.docs
+      .map((doc) => ({
+        // doc.data() is never undefined for query doc snapshots
+        ...doc.data(),
+        id: doc.id,
+      }))
+      .sort(
+        (a, b) =>
+          Date.parse(getCurrentDateInput(a.date)) -
+          Date.parse(getCurrentDateInput(b.date))
+      );
+
+    setLoader(false);
+    setAllTransactions(data);
+    setTransactionState(data);
+  };
+  useEffect(() => {
+    if (transactionState.length === 0) {
+      getTransactions();
+    } else {
+      setAllTransactions(transactionState);
+    }
+  }, []);
+  useEffect(() => {}, [thisTransaction]);
   useEffect(() => {
     getMonthlyData();
     // eslint-disable-next-line
@@ -90,6 +152,19 @@ export default function MDMmonthlyReport() {
                 onClick={() => {
                   setMonthlyData(entry);
                   setShowData(true);
+                  const m = transactionState.filter(
+                    (account) => account.id === entry.id
+                  )[0];
+                  setThisTransaction(m);
+                  const thisMonthName = m?.id.split("-")[0];
+
+                  const prevMonthName =
+                    months[months.indexOf(thisMonthName) - 1];
+
+                  const thisPrevMonthTransaction = transactionState.filter(
+                    (account) => account.id === `${prevMonthName}-${entry.year}`
+                  )[0];
+                  setPreViousMonthTransaction(thisPrevMonthTransaction);
                 }}
               >
                 {entry.id}
@@ -259,7 +334,9 @@ export default function MDMmonthlyReport() {
                 className="text-center"
               >
                 <th style={{ border: "1px solid" }}>Bal Vatika</th>
-                <th style={{ border: "1px solid" }}></th>
+                <th style={{ border: "1px solid" }}>
+                  {preViousMonthTransaction?.amount / MDM_COST / PP_STUDENTS}
+                </th>
                 <th style={{ border: "1px solid" }}>3(a)</th>
                 <th style={{ border: "1px solid" }}>3(b)</th>
                 <th style={{ border: "1px solid" }}>4</th>

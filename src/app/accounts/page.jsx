@@ -69,149 +69,146 @@ export default function Accounts() {
   }, []);
   return (
     <div className="container">
-      {loader ? (
-        <Loader />
-      ) : (
-        <>
-          <h3>Accounts</h3>
+      {loader && <Loader />}
+      <div>
+        <h3>Accounts</h3>
 
-          <table
-            style={{
-              width: "100%",
-              overflowX: "auto",
-              marginBottom: "20px",
-              border: "1px solid",
-            }}
-          >
-            <thead>
-              <tr
+        <table
+          style={{
+            width: "100%",
+            overflowX: "auto",
+            marginBottom: "20px",
+            border: "1px solid",
+          }}
+        >
+          <thead>
+            <tr
+              style={{
+                border: "1px solid",
+              }}
+              className="text-center p-1"
+            >
+              <th
                 style={{
                   border: "1px solid",
                 }}
-                className="text-center"
+                className="text-center p-1"
               >
-                <th
+                SL
+              </th>
+              <th
+                style={{
+                  border: "1px solid",
+                }}
+                className="text-center p-1"
+              >
+                ACCOUNT NAME
+              </th>
+              <th
+                style={{
+                  border: "1px solid",
+                }}
+                className="text-center p-1"
+              >
+                ACCOUNT NUMBER
+              </th>
+              <th
+                style={{
+                  border: "1px solid",
+                }}
+                className="text-center p-1"
+              >
+                BALANCE
+              </th>
+              <th
+                style={{
+                  border: "1px solid",
+                }}
+                className="text-center p-1"
+              >
+                UPDATED AT
+              </th>
+              <th
+                style={{
+                  border: "1px solid",
+                }}
+                className="text-center p-1"
+              >
+                TRANSACTIONS
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {allAccounts.map((account, index) => (
+              <tr
+                key={account.id}
+                style={{
+                  border: "1px solid",
+                }}
+                className="text-center p-1"
+              >
+                <td
                   style={{
                     border: "1px solid",
                   }}
-                  className="text-center"
+                  className="text-center p-1"
                 >
-                  SL
-                </th>
-                <th
+                  {index + 1}
+                </td>
+                <td
                   style={{
                     border: "1px solid",
                   }}
-                  className="text-center"
+                  className="text-center p-1"
                 >
-                  ACCOUNT NAME
-                </th>
-                <th
+                  {account.accountName}
+                </td>
+                <td
                   style={{
                     border: "1px solid",
                   }}
-                  className="text-center"
+                  className="text-center p-1"
                 >
-                  ACCOUNT NUMBER
-                </th>
-                <th
+                  {account.accountNumber}
+                </td>
+                <td
                   style={{
                     border: "1px solid",
                   }}
-                  className="text-center"
+                  className="text-center p-1"
                 >
-                  BALANCE
-                </th>
-                <th
+                  {account.balance}
+                </td>
+                <td
                   style={{
                     border: "1px solid",
                   }}
-                  className="text-center"
+                  className="text-center p-1"
                 >
-                  UPDATED AT
-                </th>
-                <th
+                  {account.date}
+                </td>
+                <td
                   style={{
                     border: "1px solid",
                   }}
-                  className="text-center"
+                  className="text-center p-1"
                 >
-                  TRANSACTIONS
-                </th>
+                  <button
+                    type="button"
+                    className={`btn btn-${btnArray[index].color} m-1`}
+                    onClick={() => {
+                      setStateObject(account);
+                      router.push("/transactions");
+                    }}
+                  >
+                    Transactions
+                  </button>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {allAccounts.map((account, index) => (
-                <tr
-                  key={account.id}
-                  style={{
-                    border: "1px solid",
-                  }}
-                  className="text-center"
-                >
-                  <td
-                    style={{
-                      border: "1px solid",
-                    }}
-                    className="text-center"
-                  >
-                    {index + 1}
-                  </td>
-                  <td
-                    style={{
-                      border: "1px solid",
-                    }}
-                    className="text-center"
-                  >
-                    {account.accountName}
-                  </td>
-                  <td
-                    style={{
-                      border: "1px solid",
-                    }}
-                    className="text-center"
-                  >
-                    {account.accountNumber}
-                  </td>
-                  <td
-                    style={{
-                      border: "1px solid",
-                    }}
-                    className="text-center"
-                  >
-                    {account.balance}
-                  </td>
-                  <td
-                    style={{
-                      border: "1px solid",
-                    }}
-                    className="text-center"
-                  >
-                    {account.date}
-                  </td>
-                  <td
-                    style={{
-                      border: "1px solid",
-                    }}
-                    className="text-center"
-                  >
-                    <button
-                      type="button"
-                      className={`btn btn-${btnArray[index].color} m-1`}
-                      onClick={() => {
-                        setStateObject(account);
-                        router.push("/transactions");
-                      }}
-                    >
-                      Transactions
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </>
-      )}
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
