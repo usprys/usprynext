@@ -16,6 +16,7 @@ import {
   getDocs,
   query,
   collection,
+  deleteDoc,
 } from "firebase/firestore";
 
 import Loader from "@/components/Loader";
@@ -28,9 +29,10 @@ import {
   uniqArray,
 } from "@/modules/calculatefunctions";
 import { useRouter } from "next/navigation";
-import { useGlobalContext } from "@/context/Store";
+import { useGlobalContext } from "../../context/Store";
 export default function MDMData() {
-  const { setStateObject } = useGlobalContext();
+  const { setStateObject, mealState, setMealState, riceState, setRiceState } =
+    useGlobalContext();
   const router = useRouter();
   const [date, setDate] = useState(todayInString());
   const [pp, setPp] = useState("");
@@ -59,9 +61,7 @@ export default function MDMData() {
   const [riceOB, setRiceOB] = useState(0);
   const [riceGiven, setRiceGiven] = useState(0);
   const [totalRiceGiven, setTotalRiceGiven] = useState(0);
-  const [prevMonthCost, setPrevMonthCost] = useState({});
   const [riceExpend, setRiceExpend] = useState("");
-  const [riceCB, setRiceCB] = useState(0);
   const [errRice, setErrRice] = useState("");
   const [showRiceBalance, setShowRiceBalance] = useState(false);
   const [showSubmitMonthlyReport, setShowSubmitMonthlyReport] = useState(false);
@@ -70,7 +70,9 @@ export default function MDMData() {
   const [financialYear, setFinancialYear] = useState("");
   const [monthWorkingDays, setMonthWorkingDays] = useState(0);
   const [monthPPTotal, setMonthPPTotal] = useState(0);
+  const [monthlyPPCost, setMonthlyPPCost] = useState("");
   const [monthPRYTotal, setMonthPRYTotal] = useState(0);
+  const [monthlyPRYCost, setMonthlyPRYCost] = useState("");
   const [monthTotalCost, setMonthTotalCost] = useState(0);
   const [monthRiceOB, setMonthRiceOB] = useState(0);
   const [monthRiceGiven, setMonthRiceGiven] = useState(0);
@@ -217,7 +219,7 @@ export default function MDMData() {
     const querySnapshot = await getDocs(
       query(collection(firestore, "mdmData"))
     );
-    const datas = querySnapshot.docs
+    const data = querySnapshot.docs
       .map((doc) => ({
         // doc.data() is never undefined for query doc snapshots
         ...doc.data(),
@@ -229,12 +231,13 @@ export default function MDMData() {
           Date.parse(getCurrentDateInput(b.date))
       );
     setLoader(false);
-    setAllEnry(datas);
+    setAllEnry(data);
+    setMealState(data);
   };
   const getRiceData = async () => {
     setLoader(true);
     const querySnapshot = await getDocs(query(collection(firestore, "rice")));
-    const datas = querySnapshot.docs
+    const data = querySnapshot.docs
       .map((doc) => ({
         // doc.data() is never undefined for query doc snapshots
         ...doc.data(),
@@ -246,15 +249,16 @@ export default function MDMData() {
           Date.parse(getCurrentDateInput(b.date))
       );
     setLoader(false);
-    setRiceData(datas);
-    setRiceOB(datas[datas.length - 1].riceCB);
+    setRiceData(data);
+    setRiceState(data);
+    setRiceOB(data[data.length - 1].riceCB);
   };
   const getData = async () => {
     setLoader(true);
     const querySnapshot = await getDocs(
       query(collection(firestore, "mdmData"))
     );
-    const datas = querySnapshot.docs
+    const data = querySnapshot.docs
       .map((doc) => ({
         // doc.data() is never undefined for query doc snapshots
         ...doc.data(),
@@ -265,7 +269,7 @@ export default function MDMData() {
           Date.parse(getCurrentDateInput(a.date)) -
           Date.parse(getCurrentDateInput(b.date))
       );
-    calledData(datas);
+    calledData(data);
   };
 
   const calledData = (array) => {
@@ -385,8 +389,13 @@ export default function MDMData() {
     setMonthToSubmit(month.monthName);
     setMonthWorkingDays(x.length);
     setMonthPPTotal(ppTotal);
+    setMonthlyPPCost(Math.round(ppTotal * MDM_COST));
     setMonthPRYTotal(pryTotal);
     setMonthTotalCost(Math.round((ppTotal + pryTotal) * MDM_COST));
+    setMonthlyPRYCost(
+      Math.round((ppTotal + pryTotal) * MDM_COST) -
+        Math.round(ppTotal * MDM_COST)
+    );
     setMonthRiceOB(thisMonthRiceData[0]?.riceOB);
     setMonthRiceCB(thisMonthRiceData[0]?.riceCB);
     setMonthRiceGiven(riceGiven);
@@ -413,13 +422,12 @@ export default function MDMData() {
       })
         .then(() => {
           toast.success("Rice Data added successfully");
-          setRiceCB(0);
           setRiceGiven(0);
-          setRiceCB(0);
           setRiceOB(riceOB - riceExpend);
           getRiceData();
           setDocId(todayInString());
           setDate(todayInString());
+          setRiceExpend("");
           setShowRiceData(false);
           setShowEntry(false);
           setShowDataTable(false);
@@ -461,11 +469,13 @@ export default function MDMData() {
       await setDoc(doc(firestore, "mothlyMDMData", monthYearID), {
         id: monthYearID,
         month: monthToSubmit,
-        year: selectedYear,
+        year: parseInt(selectedYear),
         financialYear: financialYear,
         worrkingDays: monthWorkingDays,
         ppTotal: monthPPTotal,
         pryTotal: monthPRYTotal,
+        monthlyPPCost: monthlyPPCost,
+        monthlyPRYCost: monthlyPRYCost,
         totalCost: monthTotalCost,
         riceOB: monthRiceOB,
         riceCB: monthRiceCB,
@@ -505,6 +515,43 @@ export default function MDMData() {
       });
     }
   };
+  const delEntry = async (entry) => {
+    setLoader(true);
+    try {
+      await deleteDoc(doc(firestore, "mdmData", entry.id))
+        .then(() => {
+          setLoader(false);
+          toast.success("MDM Data Deleted successfully");
+          let filteredEntry = mealState.filter((el) => el.id !== entry.id);
+          setMealState(filteredEntry);
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoader(false);
+          toast.error("Something went Wrong!", {
+            position: "top-right",
+            autoClose: 1500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        });
+    } catch (e) {
+      console.log(e);
+      setLoader(false);
+      toast.error("Something went Wrong!", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
 
   useEffect(() => {}, [
     allEnry,
@@ -518,10 +565,21 @@ export default function MDMData() {
     riceOB,
     monthYearID,
     financialYear,
+    monthlyPPCost,
+    monthlyPRYCost,
   ]);
   useEffect(() => {
-    getMainData();
-    getRiceData();
+    if (riceState.length === 0) {
+      getRiceData();
+    } else {
+      setRiceData(riceState);
+      setRiceOB(riceState[riceState.length - 1].riceCB);
+    }
+    if (mealState.length === 0) {
+      getMainData();
+    } else {
+      setAllEnry(mealState);
+    }
   }, []);
 
   return (
@@ -776,8 +834,16 @@ export default function MDMData() {
       )}
       {showMonthlyReport && (
         <div className="my-3">
+          <button
+            type="button"
+            className="btn btn-sm m-3 btn-success"
+            onClick={() => {
+              router.push("/MDMmonthlyReport");
+            }}
+          >
+            Generate Monthly Report
+          </button>
           <h3>Monthly Report</h3>
-
           <div className="col-md-4 mx-auto mb-3 noprint">
             <select
               className="form-select"
@@ -872,14 +938,32 @@ export default function MDMData() {
                 </button>
                 <button
                   type="button"
-                  className="btn btn-sm m-3 btn-warning"
+                  className="btn btn-sm m-3 btn-dark"
                   onClick={() => {
-                    createDownloadLink(filteredData, "mdmData");
+                    createDownloadLink(riceData, "rice");
+                  }}
+                >
+                  Download All Rice Data
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-sm m-3 btn-info"
+                  onClick={() => {
+                    createDownloadLink(filteredData, `${monthText}-mdmData`);
                   }}
                 >
                   Download {monthText} Month's MDM Data
                 </button>
                 <button
+                  type="button"
+                  className="btn btn-sm m-3 btn-dark"
+                  onClick={() => {
+                    createDownloadLink(filteredRiceData, `${monthText}-rice`);
+                  }}
+                >
+                  Download {monthText} Month's Rice Data
+                </button>
+                {/* <button
                   type="button"
                   className="btn btn-sm m-3 btn-success"
                   onClick={() => {
@@ -899,7 +983,7 @@ export default function MDMData() {
                   }}
                 >
                   Generate Monthly Report
-                </button>
+                </button> */}
               </div>
               <table
                 className="table table-responsive table-bordered table-striped"
@@ -916,6 +1000,7 @@ export default function MDMData() {
                     <th>Date</th>
                     <th>PP</th>
                     <th>Primary</th>
+                    <th>Rice</th>
                     <th>Action</th>
                   </tr>
                 </thead>
@@ -927,6 +1012,7 @@ export default function MDMData() {
                         <td>{entry.date}</td>
                         <td>{entry.pp}</td>
                         <td>{entry.pry}</td>
+                        <td>{filteredRiceData[i]?.riceExpend} Kg.</td>
                         <td>
                           <button
                             type="button"
@@ -947,6 +1033,22 @@ export default function MDMData() {
                           >
                             Edit
                           </button>
+                          <button
+                            type="button"
+                            className="btn btn-sm btn-danger m-1"
+                            onClick={() => {
+                              // eslint-disable-next-line no-alert
+                              if (
+                                window.confirm(
+                                  "Are you sure you want to delete this entry?"
+                                )
+                              ) {
+                                delEntry(entry);
+                              }
+                            }}
+                          >
+                            Delete
+                          </button>
                         </td>
                       </tr>
                     );
@@ -960,12 +1062,17 @@ export default function MDMData() {
                     </th>
                     <th>{ppTotalMeal}</th>
                     <th>{pryTotalMeal}</th>
-                    <th style={{ width: "30%", verticalAlign: "center" }}>
-                      <p>Total Meal- {ppTotalMeal + pryTotalMeal}</p>
-                      <p>
+                    <th colSpan={2} style={{ verticalAlign: "center" }}>
+                      <p style={{ margin: 0, padding: 0 }}>
+                        Total Meal- {ppTotalMeal + pryTotalMeal}
+                      </p>
+                      <p style={{ margin: 0, padding: 0 }}>
                         MDM Cost ={" "}
                         {`${ppTotalMeal} X ₹${MDM_COST} + ${pryTotalMeal} X ₹${MDM_COST} = `}
                         ₹{monthTotalCost}
+                      </p>
+                      <p style={{ margin: 0, padding: 0 }}>
+                        Rice Consumption: {monthRiceConsunption}Kg.
                       </p>
                     </th>
                   </tr>
@@ -1041,6 +1148,38 @@ export default function MDMData() {
                               setMonthPRYTotal(parseInt(e.target.value));
                             } else {
                               setMonthPRYTotal("");
+                            }
+                          }}
+                        />
+                      </div>
+                      <div className="form-group m-2">
+                        <label className="m-2">Total PP MDM Cost</label>
+                        <input
+                          type="number"
+                          className="form-control"
+                          placeholder={`Enter Total PP MDM Cost`}
+                          value={monthlyPPCost}
+                          onChange={(e) => {
+                            if (e.target.value !== "") {
+                              setMonthlyPPCost(parseInt(e.target.value));
+                            } else {
+                              setMonthlyPPCost("");
+                            }
+                          }}
+                        />
+                      </div>
+                      <div className="form-group m-2">
+                        <label className="m-2">Total PRIMARY MDM Cost</label>
+                        <input
+                          type="number"
+                          className="form-control"
+                          placeholder={`Enter Total PRIMARY MDM Cost`}
+                          value={monthlyPRYCost}
+                          onChange={(e) => {
+                            if (e.target.value !== "") {
+                              setMonthlyPRYCost(parseInt(e.target.value));
+                            } else {
+                              setMonthlyPRYCost("");
                             }
                           }}
                         />
@@ -1164,9 +1303,7 @@ export default function MDMData() {
               />
             </div>
 
-            <h4 className="m-2 text-success">
-              Rice Opening Balance {riceOB} Kg.
-            </h4>
+            <h4 className="m-2 text-success">Rice Balance {riceOB} Kg.</h4>
 
             <div className="form-group m-2">
               <label className="m-2">Rice Expenditure (in Kg.)</label>

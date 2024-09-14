@@ -394,6 +394,15 @@ export default function Navbar() {
           <li className="nav-item">
             <Link
               className="nav-link"
+              href="/MDMmonthlyReport"
+              onClick={handleNavCollapse}
+            >
+              Generate Monthly MDM Data
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link
+              className="nav-link"
               href="/accounts"
               onClick={handleNavCollapse}
             >

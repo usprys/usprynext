@@ -56,7 +56,14 @@ export default function Transactions() {
   const [isMDMWithdrawal, setIsMDMWithdrawal] = useState(true);
   const [mdmWithdrawal, setMdmWithdrawal] = useState("MDM WITHDRAWAL");
   const [type, setType] = useState("DEBIT");
-
+  const [ppOB, setPpOB] = useState("");
+  const [ppCB, setPpCB] = useState("");
+  const [ppRC, setPpRC] = useState("");
+  const [pryOB, setPryOB] = useState("");
+  const [pryRC, setPryRC] = useState("");
+  const [pryCB, setPryCB] = useState("");
+  const [openingBalance, setOpeningBalance] = useState(stateObject.balance);
+  const [closingBalance, setClosingBalance] = useState(stateObject.balance);
   const getId = () => {
     const currentDate = new Date();
     const month =
@@ -113,11 +120,14 @@ export default function Transactions() {
         type,
         date,
         id,
-        openingBalance: stateObject.balance,
-        closingBalance:
-          type === "DEBIT"
-            ? stateObject.balance - amount
-            : stateObject.balance + amount,
+        ppOB,
+        ppRC,
+        ppCB,
+        pryOB,
+        pryRC,
+        pryCB,
+        openingBalance,
+        closingBalance,
       };
       let x = transactionState;
       x = x.push(transaction);
@@ -366,9 +376,56 @@ export default function Transactions() {
                 >
                   <button
                     type="button"
+                    className={`btn btn-warning m-1`}
+                    onClick={() => {
+                      setShowEntry(true);
+                      setAmount(transaction.amount);
+                      setPurpose(transaction.purpose);
+                      setId(transaction.purpose);
+                      setType(transaction.type);
+                      setDate(transaction.date);
+                      setPpOB(transaction.ppCB);
+                      setPpRC(transaction.ppRC);
+                      setPpCB(transaction.ppCB);
+                      setPryOB(transaction.pryOB);
+                      setPryRC(transaction.pryRC);
+                      setPryCB(transaction.pryCB);
+                      setPryCB(transaction.pryCB);
+                      setOpeningBalance(transaction.openingBalance);
+                      setClosingBalance(transaction.closingBalance);
+                      setTimeout(() => {
+                        if (transaction?.purpose?.split(" ")[1] === "MDM") {
+                          setMdmWithdrawal("MDM WITHDRAWAL");
+                          setIsMDMWithdrawal(true);
+                          if (typeof (window !== "undefined")) {
+                            document.getElementById("purpose_type").value =
+                              "MDM WITHDRAWAL";
+                          }
+                        } else {
+                          setMdmWithdrawal("OTHERS");
+                          setIsMDMWithdrawal(false);
+                          if (typeof (window !== "undefined")) {
+                            document.getElementById("purpose_type").value =
+                              "OTHERS";
+                          }
+                        }
+                      }, 200);
+                    }}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    type="button"
                     className={`btn btn-${btnArray[index].color} m-1`}
                     onClick={() => {
-                      delTransaction(transaction);
+                      // eslint-disable-next-line no-alert
+                      if (
+                        window.confirm(
+                          "Are you sure you want to delete this entry?"
+                        )
+                      ) {
+                        delTransaction(transaction);
+                      }
                     }}
                   >
                     Delete
@@ -379,119 +436,276 @@ export default function Transactions() {
           </tbody>
         </table>
         {showEntry && (
-          <form action="" autoComplete="off">
+          <form action="" className="mx-auto" autoComplete="off">
             <h3>Add New Transaction</h3>
-            <div className="mb-3">
-              <label htmlFor="date" className="form-label">
-                Date
-              </label>
-              <input
-                type="date"
-                className="form-control"
-                id="date"
-                defaultValue={getCurrentDateInput(date)}
-                onChange={(e) => setDate(getSubmitDateInput(e.target.value))}
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="type" className="form-label">
-                Type
-              </label>
-              <select
-                className="form-select"
-                id="type"
-                value={type}
-                onChange={(e) => setType(e.target.value)}
-              >
-                <option value="CREDIT">CREDIT</option>
-                <option value="DEBIT">DEBIT</option>
-              </select>
-            </div>
-            <div className="mb-3">
-              <label htmlFor="type" className="form-label">
-                Transaction Purpose
-              </label>
-              <select
-                className="form-select"
-                id="type"
-                defaultValue={mdmWithdrawal}
-                onChange={(e) => {
-                  if (e.target.value === "MDM WITHDRAWAL") {
-                    setIsMDMWithdrawal(true);
-                    setMdmWithdrawal(e.target.value);
-                    setId(getId());
-                  } else {
-                    setIsMDMWithdrawal(false);
-                  }
-                }}
-              >
-                <option value="MDM WITHDRAWAL">MDM WITHDRAWAL</option>
-                <option value="OTHERS">OTHERS</option>
-              </select>
-            </div>
-            {!isMDMWithdrawal && (
-              <div className="mb-3">
-                <label htmlFor="amount" className="form-label">
-                  Purpose
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="purpose"
-                  value={purpose}
-                  onChange={(e) => {
-                    if (e.target.value !== "") {
-                      setPurpose(e.target.value.toUpperCase());
-                    } else {
-                      setPurpose("");
+            <div className="row">
+              <div className="col-md-6">
+                <div className="mb-3">
+                  <label htmlFor="date" className="form-label">
+                    Date
+                  </label>
+                  <input
+                    type="date"
+                    className="form-control"
+                    id="date"
+                    defaultValue={getCurrentDateInput(date)}
+                    onChange={(e) =>
+                      setDate(getSubmitDateInput(e.target.value))
                     }
-                  }}
-                  placeholder="Enter Purpose"
-                />
-              </div>
-            )}
-            <div className="mb-3">
-              <label htmlFor="amount" className="form-label">
-                Amount
-              </label>
-              <input
-                type="number"
-                className="form-control"
-                id="amount"
-                value={amount}
-                onChange={(e) => {
-                  if (e.target.value !== "") {
-                    const parsedAmount = parseFloat(e.target.value);
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="amount" className="form-label">
+                    Amount
+                  </label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    id="amount"
+                    value={amount}
+                    onChange={(e) => {
+                      if (e.target.value !== "") {
+                        const parsedAmount = parseFloat(e.target.value);
 
-                    setAmount(parsedAmount);
-                  } else {
-                    setAmount("");
-                  }
-                }}
-                placeholder="Enter amount"
-              />
-              <small id="amountHelp" className="form-text text-muted fs-6 my-2">
-                Maximum amount allowed: {stateObject.balance}
-              </small>
-              <div className="my-2">
-                <button
-                  type="button"
-                  className="btn btn-primary m-2"
-                  onClick={submitTransaction}
-                  disabled={
-                    stateObject.amount <= 0 ||
-                    stateObject.amount > stateObject.balance
-                  }
-                >
-                  Submit
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-danger m-2"
-                  onClick={() => setShowEntry(false)}
-                >
-                  Close
-                </button>
+                        setAmount(parsedAmount);
+                      } else {
+                        setAmount("");
+                      }
+                    }}
+                    placeholder="Enter amount"
+                  />
+                  <small
+                    id="amountHelp"
+                    className="form-text text-muted fs-6 my-2"
+                  >
+                    Maximum amount allowed: {stateObject.balance}
+                  </small>
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="type" className="form-label">
+                    Type
+                  </label>
+                  <select
+                    className="form-select"
+                    id="type"
+                    value={type}
+                    onChange={(e) => {
+                      setType(e.target.value);
+                      if (e.target.value === "DEBIT") {
+                        setClosingBalance(stateObject.balance - amount);
+                      } else {
+                        setClosingBalance(stateObject.balance + amount);
+                      }
+                    }}
+                  >
+                    <option value="CREDIT">CREDIT</option>
+                    <option value="DEBIT">DEBIT</option>
+                  </select>
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="purpose_type" className="form-label">
+                    Transaction Purpose
+                  </label>
+                  <select
+                    className="form-select"
+                    id="purpose_type"
+                    defaultValue={mdmWithdrawal}
+                    onChange={(e) => {
+                      if (e.target.value === "MDM WITHDRAWAL") {
+                        setIsMDMWithdrawal(true);
+                        setMdmWithdrawal(e.target.value);
+                        setId(getId());
+                      } else {
+                        setIsMDMWithdrawal(false);
+                      }
+                    }}
+                  >
+                    <option value="MDM WITHDRAWAL">MDM WITHDRAWAL</option>
+                    <option value="OTHERS">OTHERS</option>
+                  </select>
+                </div>
+                {isMDMWithdrawal ? null : (
+                  <div className="mb-3">
+                    <label htmlFor="amount" className="form-label">
+                      Purpose
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="purpose"
+                      value={purpose}
+                      onChange={(e) => {
+                        if (e.target.value !== "") {
+                          setPurpose(e.target.value.toUpperCase());
+                        } else {
+                          setPurpose("");
+                        }
+                      }}
+                      placeholder="Enter Purpose"
+                    />
+                  </div>
+                )}
+              </div>
+
+              <div className="col-md-6">
+                <div className="mb-3">
+                  <label htmlFor="ppOB" className="form-label">
+                    PP Opening Balance
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="ppOB"
+                    value={ppOB}
+                    onChange={(e) => {
+                      if (e.target.value !== "") {
+                        setPpOB(parseFloat(e.target.value));
+                      } else {
+                        setPpOB("");
+                      }
+                    }}
+                    placeholder="Enter PP Opening Balance"
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="ppRC" className="form-label">
+                    PP Received
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="ppRC"
+                    value={ppRC}
+                    onChange={(e) => {
+                      if (e.target.value !== "") {
+                        setPpRC(parseFloat(e.target.value));
+                      } else {
+                        setPpRC("");
+                      }
+                    }}
+                    placeholder="Enter PP Received"
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="ppCB" className="form-label">
+                    PP Closing Balance
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="ppCB"
+                    value={ppCB}
+                    onChange={(e) => {
+                      if (e.target.value !== "") {
+                        setPpCB(parseFloat(e.target.value));
+                      } else {
+                        setPpCB("");
+                      }
+                    }}
+                    placeholder="Enter PP Closing Balance"
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="pryOB" className="form-label">
+                    Primary Opening Balance
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="pryOB"
+                    value={pryOB}
+                    onChange={(e) => {
+                      if (e.target.value !== "") {
+                        setPryOB(parseFloat(e.target.value));
+                      } else {
+                        setPryOB("");
+                      }
+                    }}
+                    placeholder="Enter Primary Opening Balance"
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="pryRC" className="form-label">
+                    Primary Received
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="pryRC"
+                    value={pryRC}
+                    onChange={(e) => {
+                      if (e.target.value !== "") {
+                        setPryRC(parseFloat(e.target.value));
+                      } else {
+                        setPryRC("");
+                      }
+                    }}
+                    placeholder="Enter Primary Received"
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="pryCB" className="form-label">
+                    Primary Closing Balance
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="pryCB"
+                    value={pryCB}
+                    onChange={(e) => {
+                      if (e.target.value !== "") {
+                        setPryCB(parseFloat(e.target.value));
+                      } else {
+                        setPryCB("");
+                      }
+                    }}
+                    placeholder="Enter Primary Closing Balance"
+                  />
+                </div>
+
+                <div className="my-2">
+                  <button
+                    type="button"
+                    className="btn btn-primary m-2"
+                    onClick={submitTransaction}
+                    disabled={
+                      stateObject.amount <= 0 ||
+                      stateObject.amount > stateObject.balance
+                    }
+                  >
+                    Submit
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-danger m-2"
+                    onClick={() => {
+                      setShowEntry(false);
+                      setAmount("");
+                      setPurpose(getId());
+                      setId(getId());
+                      setType("DEBIT");
+                      setDate(todayInString());
+                      setPpOB("");
+                      setPpRC("");
+                      setPpCB("");
+                      setPryOB("");
+                      setPryRC("");
+                      setPryCB("");
+                      setPryCB("");
+                      setOpeningBalance(stateObject.balance);
+                      setClosingBalance(stateObject.balance);
+                      setMdmWithdrawal("MDM WITHDRAWAL");
+                      setIsMDMWithdrawal(true);
+                      if (typeof (window !== "undefined")) {
+                        document.getElementById("purpose_type").value =
+                          "MDM WITHDRAWAL";
+                        document.getElementById("type").value = "DEBIT";
+                      }
+                    }}
+                  >
+                    Close
+                  </button>
+                </div>
               </div>
             </div>
           </form>

@@ -1,266 +1,282 @@
 [
   {
-    "id": "01-08-2024",
-    "date": "01-08-2024",
     "riceOB": 94,
+    "date": "01-08-2024",
+    "riceCB": 90,
+    "id": "01-08-2024",
     "riceGiven": 0,
-    "riceExpend": 4,
-    "riceCB": 90
+    "riceExpend": 4
   },
   {
-    "id": "02-08-2024",
-    "date": "02-08-2024",
-    "riceOB": 90,
-    "riceGiven": 0,
     "riceExpend": 4,
+    "id": "02-08-2024",
+    "riceGiven": 0,
+    "riceOB": 90,
+    "date": "02-08-2024",
     "riceCB": 86
   },
   {
-    "id": "03-08-2024",
     "date": "03-08-2024",
-    "riceOB": 86,
     "riceGiven": 0,
-    "riceExpend": 4,
-    "riceCB": 82
+    "riceOB": 86,
+    "riceCB": 82,
+    "id": "03-08-2024",
+    "riceExpend": 4
   },
   {
     "id": "05-08-2024",
     "date": "05-08-2024",
-    "riceOB": 82,
     "riceGiven": 0,
+    "riceCB": 78,
     "riceExpend": 4,
-    "riceCB": 78
+    "riceOB": 82
   },
   {
-    "id": "06-08-2024",
-    "date": "06-08-2024",
     "riceOB": 78,
-    "riceGiven": 0,
     "riceExpend": 4,
+    "riceGiven": 0,
+    "date": "06-08-2024",
+    "id": "06-08-2024",
     "riceCB": 74
   },
   {
+    "riceGiven": 0,
+    "riceCB": 70,
+    "riceOB": 74,
     "id": "07-08-2024",
     "date": "07-08-2024",
-    "riceOB": 74,
-    "riceGiven": 0,
-    "riceExpend": 4,
-    "riceCB": 70
+    "riceExpend": 4
   },
   {
+    "riceGiven": 0,
+    "riceExpend": 4,
     "id": "08-08-2024",
     "date": "08-08-2024",
-    "riceOB": 70,
-    "riceGiven": 0,
-    "riceExpend": 4,
-    "riceCB": 66
+    "riceCB": 66,
+    "riceOB": 70
   },
   {
-    "id": "09-08-2024",
+    "riceCB": 62,
+    "riceExpend": 4,
     "date": "09-08-2024",
     "riceOB": 66,
     "riceGiven": 0,
-    "riceExpend": 4,
-    "riceCB": 62
+    "id": "09-08-2024"
   },
   {
-    "id": "10-08-2024",
-    "date": "10-08-2024",
+    "riceExpend": 4,
+    "riceCB": 58,
+    "riceGiven": 0,
     "riceOB": 62,
-    "riceGiven": 0,
-    "riceExpend": 4,
-    "riceCB": 58
+    "date": "10-08-2024",
+    "id": "10-08-2024"
   },
   {
-    "id": "12-08-2024",
-    "date": "12-08-2024",
-    "riceOB": 58,
-    "riceGiven": 0,
+    "riceCB": 52,
     "riceExpend": 8,
-    "riceCB": 52
+    "id": "12-08-2024",
+    "riceGiven": 0,
+    "date": "12-08-2024",
+    "riceOB": 58
   },
   {
+    "riceExpend": 4,
+    "riceCB": 48,
     "id": "13-08-2024",
-    "date": "13-08-2024",
     "riceOB": 52,
     "riceGiven": 0,
-    "riceExpend": 4,
-    "riceCB": 48
+    "date": "13-08-2024"
   },
   {
-    "id": "14-08-2024",
+    "riceGiven": 0,
     "date": "14-08-2024",
+    "riceCB": 44,
+    "id": "14-08-2024",
     "riceOB": 48,
-    "riceGiven": 0,
-    "riceExpend": 4,
-    "riceCB": 44
+    "riceExpend": 4
   },
   {
-    "id": "16-08-2024",
+    "riceCB": 40,
     "date": "16-08-2024",
-    "riceOB": 44,
     "riceGiven": 0,
-    "riceExpend": 4,
-    "riceCB": 40
+    "riceOB": 44,
+    "id": "16-08-2024",
+    "riceExpend": 4
   },
   {
-    "id": "17-08-2024",
-    "date": "17-08-2024",
     "riceOB": 40,
+    "date": "17-08-2024",
     "riceGiven": 0,
+    "id": "17-08-2024",
     "riceExpend": 4,
     "riceCB": 36
   },
   {
-    "id": "20-08-2024",
-    "date": "20-08-2024",
+    "riceExpend": 4,
     "riceOB": 36,
     "riceGiven": 0,
-    "riceExpend": 4,
+    "date": "20-08-2024",
+    "id": "20-08-2024",
     "riceCB": 32
   },
   {
     "id": "21-08-2024",
     "date": "21-08-2024",
+    "riceCB": 28,
     "riceOB": 32,
-    "riceGiven": 0,
     "riceExpend": 4,
-    "riceCB": 28
+    "riceGiven": 0
   },
   {
-    "id": "22-08-2024",
-    "date": "22-08-2024",
-    "riceOB": 28,
     "riceGiven": 0,
+    "date": "22-08-2024",
+    "id": "22-08-2024",
     "riceExpend": 4,
+    "riceOB": 28,
     "riceCB": 24
   },
   {
-    "id": "23-08-2024",
+    "riceGiven": 0,
     "date": "23-08-2024",
+    "id": "23-08-2024",
     "riceOB": 24,
-    "riceGiven": 0,
-    "riceExpend": 4,
-    "riceCB": 20
+    "riceCB": 20,
+    "riceExpend": 4
   },
   {
-    "id": "24-08-2024",
-    "date": "24-08-2024",
+    "riceExpend": 4,
+    "riceGiven": 0,
     "riceOB": 20,
-    "riceGiven": 0,
-    "riceExpend": 4,
-    "riceCB": 16
+    "date": "24-08-2024",
+    "riceCB": 16,
+    "id": "24-08-2024"
   },
   {
+    "riceCB": 14,
+    "riceExpend": 2,
+    "riceOB": 16,
     "id": "27-08-2024",
     "date": "27-08-2024",
-    "riceOB": 16,
-    "riceGiven": 0,
-    "riceExpend": 2,
-    "riceCB": 14
+    "riceGiven": 0
   },
   {
+    "riceGiven": 0,
+    "riceOB": 14,
+    "riceExpend": 4,
     "id": "28-08-2024",
     "date": "28-08-2024",
-    "riceOB": 14,
-    "riceGiven": 0,
-    "riceExpend": 4,
     "riceCB": 10
   },
   {
-    "id": "29-08-2024",
     "date": "29-08-2024",
-    "riceOB": 10,
+    "id": "29-08-2024",
     "riceGiven": 0,
+    "riceCB": 6,
     "riceExpend": 4,
-    "riceCB": 6
+    "riceOB": 10
   },
   {
+    "riceGiven": 0,
     "id": "30-08-2024",
     "date": "30-08-2024",
-    "riceOB": 6,
-    "riceGiven": 0,
     "riceExpend": 4,
-    "riceCB": 2
+    "riceCB": 2,
+    "riceOB": 6
   },
   {
+    "riceGiven": 0,
+    "riceOB": 2,
+    "riceCB": 0,
     "id": "31-08-2024",
     "date": "31-08-2024",
-    "riceOB": 2,
-    "riceGiven": 0,
-    "riceExpend": 2,
-    "riceCB": 0
+    "riceExpend": 2
   },
   {
-    "id": "02-09-2024",
-    "date": "02-09-2024",
     "riceOB": 0,
-    "riceGiven": 138,
+    "riceCB": 134,
+    "date": "02-09-2024",
+    "id": "02-09-2024",
     "riceExpend": 4,
-    "riceCB": 134
+    "riceGiven": 138
   },
   {
-    "id": "03-09-2024",
+    "riceCB": 130,
+    "riceExpend": 4,
     "date": "03-09-2024",
+    "riceGiven": 0,
     "riceOB": 134,
-    "riceGiven": 0,
-    "riceExpend": 4,
-    "riceCB": 130
+    "id": "03-09-2024"
   },
   {
+    "riceGiven": 0,
+    "riceExpend": 4,
     "id": "04-09-2024",
+    "riceCB": 126,
     "date": "04-09-2024",
-    "riceOB": 130,
-    "riceGiven": 0,
-    "riceExpend": 4,
-    "riceCB": 126
+    "riceOB": 130
   },
   {
-    "id": "05-09-2024",
-    "date": "05-09-2024",
     "riceOB": 126,
+    "date": "05-09-2024",
     "riceGiven": 0,
-    "riceExpend": 4,
-    "riceCB": 122
+    "id": "05-09-2024",
+    "riceCB": 122,
+    "riceExpend": 4
   },
   {
+    "riceCB": 118,
+    "riceGiven": 0,
     "id": "06-09-2024",
-    "date": "06-09-2024",
     "riceOB": 122,
-    "riceGiven": 0,
     "riceExpend": 4,
-    "riceCB": 118
+    "date": "06-09-2024"
   },
   {
-    "id": "07-09-2024",
-    "date": "07-09-2024",
-    "riceOB": 118,
     "riceGiven": 0,
     "riceExpend": 4,
-    "riceCB": 114
+    "riceOB": 118,
+    "date": "07-09-2024",
+    "riceCB": 114,
+    "id": "07-09-2024"
   },
   {
     "id": "09-09-2024",
-    "date": "09-09-2024",
+    "riceGiven": 0,
+    "riceCB": 110,
     "riceOB": 114,
-    "riceGiven": 0,
     "riceExpend": 4,
-    "riceCB": 110
+    "date": "09-09-2024"
   },
   {
+    "riceExpend": 4,
+    "riceCB": 106,
     "id": "10-09-2024",
-    "date": "10-09-2024",
     "riceOB": 110,
-    "riceGiven": 0,
-    "riceExpend": 4,
-    "riceCB": 106
+    "date": "10-09-2024",
+    "riceGiven": 0
   },
   {
-    "id": "11-09-2024",
+    "riceGiven": 0,
     "date": "11-09-2024",
-    "riceOB": 106,
+    "riceCB": 102,
+    "riceExpend": 4,
+    "id": "11-09-2024",
+    "riceOB": 106
+  },
+  {
+    "riceOB": 102,
+    "id": "12-09-2024",
+    "date": "12-09-2024",
+    "riceGiven": 0,
+    "riceCB": 98,
+    "riceExpend": 4
+  },
+  {
+    "id": "13-09-2024",
+    "date": "13-09-2024",
+    "riceCB": 94,
     "riceGiven": 0,
     "riceExpend": 4,
-    "riceCB": 102
+    "riceOB": 98
   }
 ]
