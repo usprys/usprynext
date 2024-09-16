@@ -8,6 +8,9 @@ export const BONUS = 5800;
 export const MDM_COST = 5.45;
 export const PP_STUDENTS = 6;
 export const PRIMARY_STUDENTS = 40;
+export const PRIMARY_BOYS = 22;
+export const PRIMARY_GIRLS = 18;
+export const TOTAL_STUDENTS = 46;
 export const SCHOOLNAME = "UTTAR SEHAGORI PRIMARY SCHOOL";
 export const SCHOOLBENGALINAME = "উত্তর সেহাগড়ী প্রাথমিক বিদ্যালয়";
 export const SCHOOLADDRESS =
@@ -17,4 +20,10 @@ export const SCHOOLBENGALIADDRESS =
 export const WARD_NO = "THALIA VEC-V";
 export const BLOCK = "AMTA-II";
 export const SCHOOL_TYPE = "GOVT. PRIMARY SCHOOL";
-export const CCH_NAME = ["SHYAMALI MONDAL", "LAKSHMI DAS"];
+export const CCH_NAME = [
+  { name: "SHYAMALI MONDAL", gender: "FEMALE", cast: "GEN", payment: "BANK" },
+  { name: "LAKSHMI DAS", gender: "FEMALE", cast: "OBC", payment: "BANK" },
+  ,
+];
+export const UDISE_CODE = 19160213201;
+export const NGO_SHG = "SUPRAVAT+DISHARI";

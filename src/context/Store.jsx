@@ -48,6 +48,8 @@ const GlobalContext = createContext({
   setRiceState: () => [],
   mealState: [],
   setMealState: () => [],
+  monthlyReportState: [],
+  setMonthlyReportState: () => [],
 });
 export const GlobalContextProvider = ({ children }) => {
   const [state, setState] = useState({
@@ -76,6 +78,7 @@ export const GlobalContextProvider = ({ children }) => {
   const [transactionState, setTransactionState] = useState([]);
   const [riceState, setRiceState] = useState([]);
   const [mealState, setMealState] = useState([]);
+  const [monthlyReportState, setMonthlyReportState] = useState([]);
 
   return (
     <GlobalContext.Provider
@@ -114,6 +117,8 @@ export const GlobalContextProvider = ({ children }) => {
         setRiceState,
         mealState,
         setMealState,
+        monthlyReportState,
+        setMonthlyReportState,
       }}
     >
       <FirebaseProvider>{children}</FirebaseProvider>

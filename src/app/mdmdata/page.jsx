@@ -27,12 +27,20 @@ import {
   monthNamesWithIndex,
   todayInString,
   uniqArray,
+  sortMonthwise,
 } from "@/modules/calculatefunctions";
 import { useRouter } from "next/navigation";
 import { useGlobalContext } from "../../context/Store";
 export default function MDMData() {
-  const { setStateObject, mealState, setMealState, riceState, setRiceState } =
-    useGlobalContext();
+  const {
+    setStateObject,
+    mealState,
+    setMealState,
+    riceState,
+    setRiceState,
+    monthlyReportState,
+    setMonthlyReportState,
+  } = useGlobalContext();
   const router = useRouter();
   const [date, setDate] = useState(todayInString());
   const [pp, setPp] = useState("");
@@ -48,8 +56,10 @@ export default function MDMData() {
   const [allEnry, setAllEnry] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [moreFilteredData, setMoreFilteredData] = useState([]);
-  const [ppTotalMeal, setPpTotalMeal] = useState(0);
-  const [pryTotalMeal, setPryTotalMeal] = useState(0);
+  const [monthlyReportData, setMonthlyReportData] = useState([]);
+
+  const [ppTotalMeal, setPpTotalMeal] = useState("");
+  const [pryTotalMeal, setPryTotalMeal] = useState("");
   const [showMonthSelection, setShowMonthSelection] = useState(false);
   const [monthText, setMonthText] = useState("");
   const [selectedYear, setSelectedYear] = useState("");
@@ -58,9 +68,17 @@ export default function MDMData() {
   const [showDataTable, setShowDataTable] = useState(false);
   const [riceData, setRiceData] = useState([]);
   const [filteredRiceData, setFilteredRiceData] = useState([]);
-  const [riceOB, setRiceOB] = useState(0);
-  const [riceGiven, setRiceGiven] = useState(0);
-  const [totalRiceGiven, setTotalRiceGiven] = useState(0);
+  const [riceOB, setRiceOB] = useState("");
+  const [ricePPOB, setRicePPOB] = useState("");
+  const [ricePPRC, setRicePPRC] = useState("");
+  const [ricePPEX, setRicePPEX] = useState("");
+  const [ricePPCB, setRicePPCB] = useState("");
+  const [ricePryOB, setRicePryOB] = useState("");
+  const [ricePryRC, setRicePryRC] = useState("");
+  const [ricePryEX, setRicePryEX] = useState("");
+  const [ricePryCB, setRicePryCB] = useState("");
+  const [riceGiven, setRiceGiven] = useState("");
+  const [totalRiceGiven, setTotalRiceGiven] = useState("");
   const [riceExpend, setRiceExpend] = useState("");
   const [errRice, setErrRice] = useState("");
   const [showRiceBalance, setShowRiceBalance] = useState(false);
@@ -68,17 +86,18 @@ export default function MDMData() {
 
   const [monthToSubmit, setMonthToSubmit] = useState("");
   const [financialYear, setFinancialYear] = useState("");
-  const [monthWorkingDays, setMonthWorkingDays] = useState(0);
-  const [monthPPTotal, setMonthPPTotal] = useState(0);
+  const [monthWorkingDays, setMonthWorkingDays] = useState("");
+  const [monthPPTotal, setMonthPPTotal] = useState("");
   const [monthlyPPCost, setMonthlyPPCost] = useState("");
-  const [monthPRYTotal, setMonthPRYTotal] = useState(0);
+  const [monthPRYTotal, setMonthPRYTotal] = useState("");
   const [monthlyPRYCost, setMonthlyPRYCost] = useState("");
-  const [monthTotalCost, setMonthTotalCost] = useState(0);
-  const [monthRiceOB, setMonthRiceOB] = useState(0);
-  const [monthRiceGiven, setMonthRiceGiven] = useState(0);
-  const [monthRiceConsunption, setMonthRiceConsunption] = useState(0);
-  const [monthRiceCB, setMonthRiceCB] = useState(0);
+  const [monthTotalCost, setMonthTotalCost] = useState("");
+  const [monthRiceOB, setMonthRiceOB] = useState("");
+  const [monthRiceGiven, setMonthRiceGiven] = useState("");
+  const [monthRiceConsunption, setMonthRiceConsunption] = useState("");
+  const [monthRiceCB, setMonthRiceCB] = useState("");
   const [monthYearID, setMonthYearID] = useState("");
+
   const submitData = async () => {
     if (validForm()) {
       setLoader(true);
@@ -253,23 +272,46 @@ export default function MDMData() {
     setRiceState(data);
     setRiceOB(data[data.length - 1].riceCB);
   };
-  const getData = async () => {
+  const getMonthlyData = async () => {
     setLoader(true);
     const querySnapshot = await getDocs(
-      query(collection(firestore, "mdmData"))
+      query(collection(firestore, "mothlyMDMData"))
     );
-    const data = querySnapshot.docs
-      .map((doc) => ({
-        // doc.data() is never undefined for query doc snapshots
-        ...doc.data(),
-        id: doc.id,
-      }))
-      .sort(
-        (a, b) =>
-          Date.parse(getCurrentDateInput(a.date)) -
-          Date.parse(getCurrentDateInput(b.date))
-      );
-    calledData(data);
+    const data = querySnapshot.docs.map((doc) => ({
+      // doc.data() is never undefined for query doc snapshots
+      ...doc.data(),
+      id: doc.id,
+    }));
+    const monthwiseSorted = sortMonthwise(data);
+    setMonthlyReportState(monthwiseSorted);
+    const thisMonthlyData = monthwiseSorted.filter(
+      (data) => data.id === monthYearID
+    );
+    if (thisMonthlyData.length > 0) {
+      filterMonthlyData(thisMonthlyData[0]);
+    }
+    setLoader(false);
+  };
+
+  const filterMonthlyData = (entry) => {
+    setMonthWorkingDays(entry.worrkingDays);
+    setMonthPPTotal(entry.ppTotal);
+    setMonthPRYTotal(entry.pryTotal);
+    setMonthlyPPCost(entry.monthlyPPCost);
+    setMonthlyPRYCost(entry.monthlyPRYCost);
+    setMonthTotalCost(entry.totalCost);
+    setRicePPOB(entry.ricePPOB);
+    setRicePryOB(entry.ricePryOB);
+    setMonthRiceOB(entry.riceOB);
+    setRicePPRC(entry.ricePPRC);
+    setRicePryRC(entry.ricePryRC);
+    setMonthRiceGiven(entry.riceGiven);
+    setRicePPEX(entry.ricePPEX);
+    setRicePryEX(entry.ricePryEX);
+    setMonthRiceConsunption(entry.riceConsunption);
+    setRicePPCB(entry.ricePPCB);
+    setRicePryCB(entry.ricePryCB);
+    setMonthRiceCB(entry.riceCB);
   };
 
   const calledData = (array) => {
@@ -466,7 +508,7 @@ export default function MDMData() {
   const submitMonthlyData = async () => {
     setLoader(true);
     try {
-      await setDoc(doc(firestore, "mothlyMDMData", monthYearID), {
+      const entry = {
         id: monthYearID,
         month: monthToSubmit,
         year: parseInt(selectedYear),
@@ -477,15 +519,28 @@ export default function MDMData() {
         monthlyPPCost: monthlyPPCost,
         monthlyPRYCost: monthlyPRYCost,
         totalCost: monthTotalCost,
+        ricePPOB,
+        ricePryOB,
         riceOB: monthRiceOB,
+        ricePPRC,
+        ricePryRC,
+        ricePPEX,
+        ricePryEX,
+        ricePPCB,
+        ricePryCB,
         riceCB: monthRiceCB,
         riceConsunption: monthRiceConsunption,
         riceGiven: monthRiceGiven,
         date: todayInString(),
-      })
+      };
+      await setDoc(doc(firestore, "mothlyMDMData", monthYearID), entry)
         .then(() => {
           toast.success("Monthly MDM Data Submitted successfully");
           setLoader(false);
+          setMonthlyReportState();
+          let z = monthlyReportState.filter((item) => item.id !== monthYearID);
+          z = [...z, entry];
+          setMonthlyReportState(sortMonthwise(z));
           setShowSubmitMonthlyReport(false);
         })
         .catch((e) => {
@@ -852,7 +907,7 @@ export default function MDMData() {
               aria-label="Default select example"
             >
               <option className="text-center text-primary" value="">
-                Select Joining Year
+                Select MDM Year
               </option>
               {serviceArray.map((el, i) => (
                 <option
@@ -1082,7 +1137,20 @@ export default function MDMData() {
                 <button
                   type="button"
                   className="btn btn-dark"
-                  onClick={() => setShowSubmitMonthlyReport(true)}
+                  onClick={() => {
+                    setShowSubmitMonthlyReport(true);
+                    if (monthlyReportState.length === 0) {
+                      getMonthlyData();
+                    } else {
+                      setMonthlyReportData(monthlyReportState);
+                      const thisMonthlyData = monthlyReportState.filter(
+                        (data) => data.id === monthYearID
+                      );
+                      if (thisMonthlyData.length > 0) {
+                        filterMonthlyData(thisMonthlyData[0]);
+                      }
+                    }
+                  }}
                 >
                   Submit Monthly Report
                 </button>
@@ -1200,8 +1268,45 @@ export default function MDMData() {
                           }}
                         />
                       </div>
+
                       <div className="form-group m-2">
-                        <label className="m-2">Rice Opening Balance</label>
+                        <label className="m-2">PP Rice Opening Balance</label>
+                        <input
+                          type="number"
+                          className="form-control"
+                          placeholder={`Enter PP Rice Opening Balance`}
+                          value={ricePPOB}
+                          onChange={(e) => {
+                            if (e.target.value !== "") {
+                              setRicePPOB(parseInt(e.target.value));
+                            } else {
+                              setRicePPOB("");
+                            }
+                          }}
+                        />
+                      </div>
+                      <div className="form-group m-2">
+                        <label className="m-2">
+                          Primary Rice Opening Balance
+                        </label>
+                        <input
+                          type="number"
+                          className="form-control"
+                          placeholder={`Enter Primary Rice Opening Balance`}
+                          value={ricePryOB}
+                          onChange={(e) => {
+                            if (e.target.value !== "") {
+                              setRicePryOB(parseInt(e.target.value));
+                            } else {
+                              setRicePryOB("");
+                            }
+                          }}
+                        />
+                      </div>
+                      <div className="form-group m-2">
+                        <label className="m-2">
+                          Total Rice Opening Balance
+                        </label>
                         <input
                           type="number"
                           className="form-control"
@@ -1217,7 +1322,39 @@ export default function MDMData() {
                         />
                       </div>
                       <div className="form-group m-2">
-                        <label className="m-2">Rice Received</label>
+                        <label className="m-2">PP Rice Received</label>
+                        <input
+                          type="number"
+                          className="form-control"
+                          placeholder={`Enter PP Rice Received`}
+                          value={ricePPRC}
+                          onChange={(e) => {
+                            if (e.target.value !== "") {
+                              setRicePPRC(parseInt(e.target.value));
+                            } else {
+                              setRicePPRC("");
+                            }
+                          }}
+                        />
+                      </div>
+                      <div className="form-group m-2">
+                        <label className="m-2">Primary Rice Received</label>
+                        <input
+                          type="number"
+                          className="form-control"
+                          placeholder={`Enter Primary Rice Received`}
+                          value={ricePryRC}
+                          onChange={(e) => {
+                            if (e.target.value !== "") {
+                              setRicePryRC(parseInt(e.target.value));
+                            } else {
+                              setRicePryRC("");
+                            }
+                          }}
+                        />
+                      </div>
+                      <div className="form-group m-2">
+                        <label className="m-2">Total Rice Received</label>
                         <input
                           type="number"
                           className="form-control"
@@ -1233,7 +1370,39 @@ export default function MDMData() {
                         />
                       </div>
                       <div className="form-group m-2">
-                        <label className="m-2">Rice Consumption</label>
+                        <label className="m-2">PP Rice Consumption</label>
+                        <input
+                          type="number"
+                          className="form-control"
+                          placeholder={`Enter PP Rice Consumption`}
+                          value={ricePPEX}
+                          onChange={(e) => {
+                            if (e.target.value !== "") {
+                              setRicePPEX(parseInt(e.target.value));
+                            } else {
+                              setRicePPEX("");
+                            }
+                          }}
+                        />
+                      </div>
+                      <div className="form-group m-2">
+                        <label className="m-2">Primary Rice Consumption</label>
+                        <input
+                          type="number"
+                          className="form-control"
+                          placeholder={`Enter Primary Rice Consumption`}
+                          value={ricePryEX}
+                          onChange={(e) => {
+                            if (e.target.value !== "") {
+                              setRicePryEX(parseInt(e.target.value));
+                            } else {
+                              setRicePryEX("");
+                            }
+                          }}
+                        />
+                      </div>
+                      <div className="form-group m-2">
+                        <label className="m-2">Total Rice Consumption</label>
                         <input
                           type="number"
                           className="form-control"
@@ -1249,7 +1418,43 @@ export default function MDMData() {
                         />
                       </div>
                       <div className="form-group m-2">
-                        <label className="m-2">Rice Closing Balance</label>
+                        <label className="m-2">PP Rice Closing Balance</label>
+                        <input
+                          type="number"
+                          className="form-control"
+                          placeholder={`Enter PP Rice Closing Balance`}
+                          value={ricePPCB}
+                          onChange={(e) => {
+                            if (e.target.value !== "") {
+                              setRicePPCB(parseInt(e.target.value));
+                            } else {
+                              setRicePPCB("");
+                            }
+                          }}
+                        />
+                      </div>
+                      <div className="form-group m-2">
+                        <label className="m-2">
+                          Primary Rice Closing Balance
+                        </label>
+                        <input
+                          type="number"
+                          className="form-control"
+                          placeholder={`Enter Primary Rice Closing Balance`}
+                          value={ricePryCB}
+                          onChange={(e) => {
+                            if (e.target.value !== "") {
+                              setRicePryCB(parseInt(e.target.value));
+                            } else {
+                              setRicePryCB("");
+                            }
+                          }}
+                        />
+                      </div>
+                      <div className="form-group m-2">
+                        <label className="m-2">
+                          Total Rice Closing Balance
+                        </label>
                         <input
                           type="number"
                           className="form-control"
