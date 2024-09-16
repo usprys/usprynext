@@ -66,6 +66,7 @@ export default function Accounts() {
     } else {
       setAllAccounts(accountState);
     }
+    //eslint-disable-next-line
   }, []);
   return (
     <div className="container">

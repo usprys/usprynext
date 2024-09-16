@@ -54,8 +54,8 @@ export default function ReactTable({ tableColumns, tableData }) {
         textAlign={"center"}
       >
         <Thead>
-          {headerGroups.map((headerGroup) => (
-            <Tr {...headerGroup.getHeaderGroupProps()}>
+          {headerGroups.map((headerGroup, i) => (
+            <Tr {...headerGroup.getHeaderGroupProps()} key={i}>
               <Th>Sl No.</Th>
               {headerGroup.headers.map((column) => (
                 <>
@@ -76,7 +76,7 @@ export default function ReactTable({ tableColumns, tableData }) {
           {page.map((row, i) => {
             prepareRow(row);
             return (
-              <Tr {...row.getRowProps()}>
+              <Tr {...row.getRowProps()} key={i}>
                 <Td>{i + 1 + pageIndex * 10}</Td>
                 {row.cells.map((cell, ind) => {
                   return (

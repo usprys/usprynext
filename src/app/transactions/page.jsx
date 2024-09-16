@@ -216,8 +216,11 @@ export default function Transactions() {
         setId(getId());
       }
     }
+    //eslint-disable-next-line
   }, []);
-  useEffect(() => {}, [stateObject, allTransactions, id]);
+  useEffect(() => {
+    //eslint-disable-next-line
+  }, [stateObject, allTransactions, id]);
   return (
     <div className="container">
       {loader && <Loader />}

@@ -26,7 +26,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/app/DownloadAdmissionForm/page.jsx"
+    "src/app/DownloadAdmissionForm/page.tsx"
   ],
   "exclude": ["node_modules"]
 }

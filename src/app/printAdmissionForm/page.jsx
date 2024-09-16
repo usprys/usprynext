@@ -46,7 +46,7 @@ export default function PrintAddmissionForm() {
   useEffect(() => {
     document.title = `Apllication Form of ${student_eng_name}`;
 
-    // router.push("/admission");
+    //eslint-disable-next-line
   }, []);
   return (
     <div className="container-fluid mx-auto my-auto ben p-2">

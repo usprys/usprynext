@@ -163,7 +163,7 @@ export default function Login() {
           </button>
         </form>
         <p className="mt-3 text-center">
-          Don't have an account?{" "}
+          Do Not have an account?{" "}
           <Link className="btn btn-success btn-sm" href="/signup">
             Sign Up
           </Link>

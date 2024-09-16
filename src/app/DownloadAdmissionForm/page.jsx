@@ -55,17 +55,17 @@ export default function DownloadAdmissionForm({ data }) {
     <Document title={`Apllication Form of ${student_eng_name}`}>
       <Page size="A4" style={styles.page}>
         <View style={styles.headSection}>
-          <Image src={schoolLogo.src} style={{ width: 70 }} />
+          <Image src={schoolLogo.src} alt="logo" style={{ width: 70 }} />
           <View style={[styles.schView, { width: scrWidth(40) }]}>
             <Text style={styles.schName}>{SCHOOLBENGALINAME}</Text>
 
             <Text style={styles.schAddress}>{SCHOOLBENGALIADDRESS} </Text>
           </View>
+
           <Image
-            src={{
-              uri: `https://api.qrserver.com/v1/create-qr-code/?data=UTTAR SEHAGORI PRIMARY SCHOOL: STUDENT NAME:${" "}${student_eng_name}, Father's name:${" "}${father_eng_name},Mother's name:${" "}${mother_eng_name}, Mobile Number:${" "}${student_mobile}, Gender:${" "}${student_gender},  Addmission Class:${" "} ${student_addmission_class}, Application Number:${" "} ${id}, Application Date:${" "} ${student_addmission_date}`,
-            }}
+            src={`https://api.qrserver.com/v1/create-qr-code/?data=UTTAR SEHAGORI PRIMARY SCHOOL: STUDENT NAME:${" "}${student_eng_name}, Father's name:${" "}${father_eng_name},Mother's name:${" "}${mother_eng_name}, Mobile Number:${" "}${student_mobile}, Gender:${" "}${student_gender},  Addmission Class:${" "} ${student_addmission_class}, Application Number:${" "} ${id}, Application Date:${" "} ${student_addmission_date}`}
             style={{ width: 70 }}
+            alt="qr-code"
           />
         </View>
         <View style={styles.admView}>

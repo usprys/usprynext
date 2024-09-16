@@ -31,6 +31,7 @@ import {
 } from "@/modules/calculatefunctions";
 import { useRouter } from "next/navigation";
 import { useGlobalContext } from "../../context/Store";
+import { useStatStyles } from "@chakra-ui/react";
 export default function MDMData() {
   const {
     setStateObject,
@@ -97,7 +98,7 @@ export default function MDMData() {
   const [monthRiceConsunption, setMonthRiceConsunption] = useState("");
   const [monthRiceCB, setMonthRiceCB] = useState("");
   const [monthYearID, setMonthYearID] = useState("");
-
+  const [monYear, setMonYear] = useState("");
   const submitData = async () => {
     if (validForm()) {
       setLoader(true);
@@ -409,6 +410,7 @@ export default function MDMData() {
           Date.parse(getCurrentDateInput(b.date))
       )
     );
+
     let riceGiven = 0;
     let thisMonthRiceData = y.sort(
       (a, b) =>
@@ -622,6 +624,7 @@ export default function MDMData() {
     financialYear,
     monthlyPPCost,
     monthlyPRYCost,
+    filteredRiceData,
   ]);
   useEffect(() => {
     if (riceState.length === 0) {
@@ -635,6 +638,7 @@ export default function MDMData() {
     } else {
       setAllEnry(mealState);
     }
+    //eslint-disable-next-line
   }, []);
 
   return (
@@ -989,7 +993,7 @@ export default function MDMData() {
                     createDownloadLink(allEnry, "mdmData");
                   }}
                 >
-                  Download All MDM Data
+                  Download All MDM SMS Data
                 </button>
                 <button
                   type="button"
@@ -1007,7 +1011,7 @@ export default function MDMData() {
                     createDownloadLink(filteredData, `${monthText}-mdmData`);
                   }}
                 >
-                  Download {monthText} Month's MDM Data
+                  Download {monthText} Month`&apos;`s MDM SMS Data
                 </button>
                 <button
                   type="button"
@@ -1016,7 +1020,7 @@ export default function MDMData() {
                     createDownloadLink(filteredRiceData, `${monthText}-rice`);
                   }}
                 >
-                  Download {monthText} Month's Rice Data
+                  Download {monthText} Month`&apos;`s Rice Data
                 </button>
                 {/* <button
                   type="button"
@@ -1498,23 +1502,63 @@ export default function MDMData() {
         <div className="my-3">
           <h4 className="my-3">Rice Data</h4>
           <form>
-            <div className="form-group m-2">
+            <div className="form-group m-2 col-md-4 mx-auto">
               <label className="m-2">Date</label>
               <input
                 type="date"
                 className="form-control"
                 defaultValue={getCurrentDateInput(date)}
-                onChange={(e) => setDate(getSubmitDateInput(e.target.value))}
+                onChange={(e) => {
+                  const data = getSubmitDateInput(e.target.value);
+                  setDate(data);
+                  const Year = data.split("-")[2];
+                  const Month = data.split("-")[1];
+                  const Day = parseInt(data.split("-")[0]);
+                  let prevDay = Day - 1;
+                  if (prevDay < 10) {
+                    prevDay = "0" + prevDay;
+                  }
+                  const prevDate = `${prevDay}-${Month}-${Year}`;
+                  let beforePrevDay = Day - 2;
+                  if (beforePrevDay < 10) {
+                    beforePrevDay = "0" + beforePrevDay;
+                  }
+                  const beforePrevDate = `${beforePrevDay}-${Month}-${Year}`;
+                  const filteredData = riceData.filter(
+                    (entry) => entry.date === prevDate
+                  );
+                  const filteredPrevDayData = riceData.filter(
+                    (entry) => entry.date === beforePrevDate
+                  );
+                  if (filteredData.length > 0) {
+                    setRiceOB(filteredData[0]?.riceCB);
+                  } else if (filteredPrevDayData.length > 0) {
+                    setRiceOB(filteredPrevDayData[0]?.riceCB);
+                  } else {
+                    toast.error(`Could not find entry`);
+                  }
+                  // monthNamesWithIndex.filter((month) => {
+                  //   if (month.index === Month) {
+                  //     setMonYear(`${month.monthName}-${Year}`);
+                  //   }
+                  // });
+                  // const reportData = monthlyReportState.filter(
+                  //   (entry) => entry.id === monYear
+                  // );
+                  // if (reportData.length > 0) {
+                  //   setRiceOB(reportData[0]?.riceCB);
+                  // }
+                }}
               />
             </div>
 
             <h4 className="m-2 text-success">Rice Balance {riceOB} Kg.</h4>
 
-            <div className="form-group m-2">
+            <div className="form-group m-2 col-md-4 mx-auto">
               <label className="m-2">Rice Expenditure (in Kg.)</label>
               <input
                 type="number"
-                className="form-control"
+                className="form-control "
                 placeholder={`Enter Rice Expenditure`}
                 value={riceExpend}
                 onChange={(e) => {

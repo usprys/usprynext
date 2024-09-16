@@ -1,282 +1,498 @@
 [
   {
-    "riceOB": 94,
-    "date": "01-08-2024",
-    "riceCB": 90,
-    "id": "01-08-2024",
-    "riceGiven": 0,
-    "riceExpend": 4
-  },
-  {
+    "id": "01-07-2024",
+    "date": "01-07-2024",
+    "riceOB": 50,
     "riceExpend": 4,
-    "id": "02-08-2024",
-    "riceGiven": 0,
-    "riceOB": 90,
-    "date": "02-08-2024",
-    "riceCB": 86
+    "riceCB": 46,
+    "riceGiven": 0
   },
   {
-    "date": "03-08-2024",
-    "riceGiven": 0,
-    "riceOB": 86,
-    "riceCB": 82,
+    "id": "02-07-2024",
+    "date": "02-07-2024",
+    "riceOB": 46,
+    "riceExpend": 4,
+    "riceCB": 42,
+    "riceGiven": 0
+  },
+  {
+    "id": "03-07-2024",
+    "date": "03-07-2024",
+    "riceOB": 42,
+    "riceExpend": 4,
+    "riceCB": 38,
+    "riceGiven": 0
+  },
+  {
+    "id": "04-07-2024",
+    "date": "04-07-2024",
+    "riceOB": 38,
+    "riceExpend": 4,
+    "riceCB": 34,
+    "riceGiven": 0
+  },
+  {
+    "id": "05-07-2024",
+    "date": "05-07-2024",
+    "riceOB": 34,
+    "riceExpend": 4,
+    "riceCB": 30,
+    "riceGiven": 0
+  },
+  {
+    "id": "06-07-2024",
+    "date": "06-07-2024",
+    "riceOB": 30,
+    "riceExpend": 4,
+    "riceCB": 26,
+    "riceGiven": 0
+  },
+  {
+    "id": "08-07-2024",
+    "date": "08-07-2024",
+    "riceOB": 26,
+    "riceExpend": 4,
+    "riceCB": 22,
+    "riceGiven": 0
+  },
+  {
+    "id": "09-07-2024",
+    "date": "09-07-2024",
+    "riceOB": 22,
+    "riceExpend": 4,
+    "riceCB": 18,
+    "riceGiven": 0
+  },
+  {
+    "id": "10-07-2024",
+    "date": "10-07-2024",
+    "riceOB": 18,
+    "riceExpend": 4,
+    "riceCB": 14,
+    "riceGiven": 138
+  },
+  {
+    "id": "11-07-2024",
+    "date": "11-07-2024",
+    "riceOB": 152,
+    "riceExpend": 4,
+    "riceCB": 148,
+    "riceGiven": 0
+  },
+  {
+    "id": "12-07-2024",
+    "date": "12-07-2024",
+    "riceOB": 148,
+    "riceExpend": 3,
+    "riceCB": 145,
+    "riceGiven": 0
+  },
+  {
+    "id": "13-07-2024",
+    "date": "13-07-2024",
+    "riceOB": 145,
+    "riceExpend": 4,
+    "riceCB": 141,
+    "riceGiven": 0
+  },
+  {
+    "id": "15-07-2024",
+    "date": "15-07-2024",
+    "riceOB": 141,
+    "riceExpend": 4,
+    "riceCB": 137,
+    "riceGiven": 0
+  },
+  {
+    "id": "16-07-2024",
+    "date": "16-07-2024",
+    "riceOB": 137,
+    "riceExpend": 2,
+    "riceCB": 135,
+    "riceGiven": 0
+  },
+  {
+    "id": "18-07-2024",
+    "date": "18-07-2024",
+    "riceOB": 135,
+    "riceExpend": 1,
+    "riceCB": 134,
+    "riceGiven": 0
+  },
+  {
+    "id": "19-07-2024",
+    "date": "19-07-2024",
+    "riceOB": 134,
+    "riceExpend": 4,
+    "riceCB": 130,
+    "riceGiven": 0
+  },
+  {
+    "id": "20-07-2024",
+    "date": "20-07-2024",
+    "riceOB": 130,
+    "riceExpend": 4,
+    "riceCB": 126,
+    "riceGiven": 0
+  },
+  {
+    "id": "22-07-2024",
+    "date": "22-07-2024",
+    "riceOB": 126,
+    "riceExpend": 2,
+    "riceCB": 124,
+    "riceGiven": 0
+  },
+  {
+    "id": "23-07-2024",
+    "date": "23-07-2024",
+    "riceOB": 124,
+    "riceExpend": 2,
+    "riceCB": 122,
+    "riceGiven": 0
+  },
+  {
+    "id": "24-07-2024",
+    "date": "24-07-2024",
+    "riceOB": 122,
+    "riceExpend": 4,
+    "riceCB": 118,
+    "riceGiven": 0
+  },
+  {
+    "id": "25-07-2024",
+    "date": "25-07-2024",
+    "riceOB": 118,
+    "riceExpend": 4,
+    "riceCB": 114,
+    "riceGiven": 0
+  },
+  {
+    "id": "26-07-2024",
+    "date": "26-07-2024",
+    "riceOB": 114,
+    "riceExpend": 4,
+    "riceCB": 110,
+    "riceGiven": 0
+  },
+  {
+    "id": "27-07-2024",
+    "date": "27-07-2024",
+    "riceOB": 110,
+    "riceExpend": 4,
+    "riceCB": 106,
+    "riceGiven": 0
+  },
+  {
+    "id": "29-07-2024",
+    "date": "29-07-2024",
+    "riceOB": 106,
+    "riceExpend": 4,
+    "riceCB": 102,
+    "riceGiven": 0
+  },
+  {
+    "id": "30-07-2024",
+    "date": "30-07-2024",
+    "riceOB": 102,
+    "riceExpend": 4,
+    "riceCB": 98,
+    "riceGiven": 0
+  },
+  {
+    "id": "31-07-2024",
+    "date": "31-07-2024",
+    "riceOB": 98,
+    "riceExpend": 4,
+    "riceCB": 94,
+    "riceGiven": 0
+  },
+  {
+    "id": "22-07-2024",
+    "date": "22-07-2024",
+    "riceOB": 50,
+    "riceExpend": 4,
+    "riceCB": 46,
+    "riceGiven": 0
+  },
+  {
+    "id": "01-08-2024",
+    "date": "01-08-2024",
+    "riceOB": 94,
+    "riceExpend": 4,
+    "riceCB": 90,
+    "riceGiven": 0
+  },
+  {
+    "id": "02-08-2024",
+    "date": "02-08-2024",
+    "riceOB": 90,
+    "riceExpend": 4,
+    "riceCB": 86,
+    "riceGiven": 0
+  },
+  {
     "id": "03-08-2024",
-    "riceExpend": 4
+    "date": "03-08-2024",
+    "riceOB": 86,
+    "riceExpend": 4,
+    "riceCB": 82,
+    "riceGiven": 0
   },
   {
     "id": "05-08-2024",
     "date": "05-08-2024",
-    "riceGiven": 0,
-    "riceCB": 78,
+    "riceOB": 82,
     "riceExpend": 4,
-    "riceOB": 82
+    "riceCB": 78,
+    "riceGiven": 0
   },
   {
+    "id": "06-08-2024",
+    "date": "06-08-2024",
     "riceOB": 78,
     "riceExpend": 4,
-    "riceGiven": 0,
-    "date": "06-08-2024",
-    "id": "06-08-2024",
-    "riceCB": 74
+    "riceCB": 74,
+    "riceGiven": 0
   },
   {
-    "riceGiven": 0,
-    "riceCB": 70,
-    "riceOB": 74,
     "id": "07-08-2024",
     "date": "07-08-2024",
-    "riceExpend": 4
+    "riceOB": 74,
+    "riceExpend": 4,
+    "riceCB": 70,
+    "riceGiven": 0
   },
   {
-    "riceGiven": 0,
-    "riceExpend": 4,
     "id": "08-08-2024",
     "date": "08-08-2024",
+    "riceOB": 70,
+    "riceExpend": 4,
     "riceCB": 66,
-    "riceOB": 70
+    "riceGiven": 0
   },
   {
-    "riceCB": 62,
-    "riceExpend": 4,
+    "id": "09-08-2024",
     "date": "09-08-2024",
     "riceOB": 66,
-    "riceGiven": 0,
-    "id": "09-08-2024"
+    "riceExpend": 4,
+    "riceCB": 62,
+    "riceGiven": 0
   },
   {
+    "id": "10-08-2024",
+    "date": "10-08-2024",
+    "riceOB": 62,
     "riceExpend": 4,
     "riceCB": 58,
-    "riceGiven": 0,
-    "riceOB": 62,
-    "date": "10-08-2024",
-    "id": "10-08-2024"
+    "riceGiven": 0
   },
   {
-    "riceCB": 52,
-    "riceExpend": 8,
     "id": "12-08-2024",
-    "riceGiven": 0,
     "date": "12-08-2024",
-    "riceOB": 58
+    "riceOB": 58,
+    "riceExpend": 8,
+    "riceCB": 52,
+    "riceGiven": 0
   },
   {
+    "id": "13-08-2024",
+    "date": "13-08-2024",
+    "riceOB": 52,
     "riceExpend": 4,
     "riceCB": 48,
-    "id": "13-08-2024",
-    "riceOB": 52,
-    "riceGiven": 0,
-    "date": "13-08-2024"
+    "riceGiven": 0
   },
   {
-    "riceGiven": 0,
-    "date": "14-08-2024",
-    "riceCB": 44,
     "id": "14-08-2024",
+    "date": "14-08-2024",
     "riceOB": 48,
-    "riceExpend": 4
+    "riceExpend": 4,
+    "riceCB": 44,
+    "riceGiven": 0
   },
   {
-    "riceCB": 40,
-    "date": "16-08-2024",
-    "riceGiven": 0,
-    "riceOB": 44,
     "id": "16-08-2024",
-    "riceExpend": 4
+    "date": "16-08-2024",
+    "riceOB": 44,
+    "riceExpend": 4,
+    "riceCB": 40,
+    "riceGiven": 0
   },
   {
-    "riceOB": 40,
-    "date": "17-08-2024",
-    "riceGiven": 0,
     "id": "17-08-2024",
+    "date": "17-08-2024",
+    "riceOB": 40,
     "riceExpend": 4,
-    "riceCB": 36
+    "riceCB": 36,
+    "riceGiven": 0
   },
   {
-    "riceExpend": 4,
-    "riceOB": 36,
-    "riceGiven": 0,
-    "date": "20-08-2024",
     "id": "20-08-2024",
-    "riceCB": 32
+    "date": "20-08-2024",
+    "riceOB": 36,
+    "riceExpend": 4,
+    "riceCB": 32,
+    "riceGiven": 0
   },
   {
     "id": "21-08-2024",
     "date": "21-08-2024",
-    "riceCB": 28,
     "riceOB": 32,
     "riceExpend": 4,
+    "riceCB": 28,
     "riceGiven": 0
   },
   {
-    "riceGiven": 0,
-    "date": "22-08-2024",
     "id": "22-08-2024",
-    "riceExpend": 4,
+    "date": "22-08-2024",
     "riceOB": 28,
-    "riceCB": 24
-  },
-  {
-    "riceGiven": 0,
-    "date": "23-08-2024",
-    "id": "23-08-2024",
-    "riceOB": 24,
-    "riceCB": 20,
-    "riceExpend": 4
-  },
-  {
     "riceExpend": 4,
-    "riceGiven": 0,
-    "riceOB": 20,
-    "date": "24-08-2024",
-    "riceCB": 16,
-    "id": "24-08-2024"
+    "riceCB": 24,
+    "riceGiven": 0
   },
   {
-    "riceCB": 14,
-    "riceExpend": 2,
-    "riceOB": 16,
+    "id": "23-08-2024",
+    "date": "23-08-2024",
+    "riceOB": 24,
+    "riceExpend": 4,
+    "riceCB": 20,
+    "riceGiven": 0
+  },
+  {
+    "id": "24-08-2024",
+    "date": "24-08-2024",
+    "riceOB": 20,
+    "riceExpend": 4,
+    "riceCB": 16,
+    "riceGiven": 0
+  },
+  {
     "id": "27-08-2024",
     "date": "27-08-2024",
+    "riceOB": 16,
+    "riceExpend": 2,
+    "riceCB": 14,
     "riceGiven": 0
   },
   {
-    "riceGiven": 0,
-    "riceOB": 14,
-    "riceExpend": 4,
     "id": "28-08-2024",
     "date": "28-08-2024",
-    "riceCB": 10
-  },
-  {
-    "date": "29-08-2024",
-    "id": "29-08-2024",
-    "riceGiven": 0,
-    "riceCB": 6,
+    "riceOB": 14,
     "riceExpend": 4,
-    "riceOB": 10
+    "riceCB": 10,
+    "riceGiven": 0
   },
   {
-    "riceGiven": 0,
+    "id": "29-08-2024",
+    "date": "29-08-2024",
+    "riceOB": 10,
+    "riceExpend": 4,
+    "riceCB": 6,
+    "riceGiven": 0
+  },
+  {
     "id": "30-08-2024",
     "date": "30-08-2024",
+    "riceOB": 6,
     "riceExpend": 4,
     "riceCB": 2,
-    "riceOB": 6
+    "riceGiven": 0
   },
   {
-    "riceGiven": 0,
-    "riceOB": 2,
-    "riceCB": 0,
     "id": "31-08-2024",
     "date": "31-08-2024",
-    "riceExpend": 2
+    "riceOB": 2,
+    "riceExpend": 2,
+    "riceCB": 0,
+    "riceGiven": 0
   },
   {
-    "riceOB": 0,
-    "riceCB": 134,
-    "date": "02-09-2024",
     "id": "02-09-2024",
+    "date": "02-09-2024",
+    "riceOB": 0,
     "riceExpend": 4,
+    "riceCB": 134,
     "riceGiven": 138
   },
   {
-    "riceCB": 130,
-    "riceExpend": 4,
+    "id": "03-09-2024",
     "date": "03-09-2024",
-    "riceGiven": 0,
     "riceOB": 134,
-    "id": "03-09-2024"
-  },
-  {
-    "riceGiven": 0,
     "riceExpend": 4,
-    "id": "04-09-2024",
-    "riceCB": 126,
-    "date": "04-09-2024",
-    "riceOB": 130
-  },
-  {
-    "riceOB": 126,
-    "date": "05-09-2024",
-    "riceGiven": 0,
-    "id": "05-09-2024",
-    "riceCB": 122,
-    "riceExpend": 4
-  },
-  {
-    "riceCB": 118,
-    "riceGiven": 0,
-    "id": "06-09-2024",
-    "riceOB": 122,
-    "riceExpend": 4,
-    "date": "06-09-2024"
-  },
-  {
-    "riceGiven": 0,
-    "riceExpend": 4,
-    "riceOB": 118,
-    "date": "07-09-2024",
-    "riceCB": 114,
-    "id": "07-09-2024"
-  },
-  {
-    "id": "09-09-2024",
-    "riceGiven": 0,
-    "riceCB": 110,
-    "riceOB": 114,
-    "riceExpend": 4,
-    "date": "09-09-2024"
-  },
-  {
-    "riceExpend": 4,
-    "riceCB": 106,
-    "id": "10-09-2024",
-    "riceOB": 110,
-    "date": "10-09-2024",
+    "riceCB": 130,
     "riceGiven": 0
   },
   {
-    "riceGiven": 0,
-    "date": "11-09-2024",
-    "riceCB": 102,
+    "id": "04-09-2024",
+    "date": "04-09-2024",
+    "riceOB": 130,
     "riceExpend": 4,
-    "id": "11-09-2024",
-    "riceOB": 106
+    "riceCB": 126,
+    "riceGiven": 0
   },
   {
-    "riceOB": 102,
+    "id": "05-09-2024",
+    "date": "05-09-2024",
+    "riceOB": 126,
+    "riceExpend": 4,
+    "riceCB": 122,
+    "riceGiven": 0
+  },
+  {
+    "id": "06-09-2024",
+    "date": "06-09-2024",
+    "riceOB": 122,
+    "riceExpend": 4,
+    "riceCB": 118,
+    "riceGiven": 0
+  },
+  {
+    "id": "07-09-2024",
+    "date": "07-09-2024",
+    "riceOB": 118,
+    "riceExpend": 4,
+    "riceCB": 114,
+    "riceGiven": 0
+  },
+  {
+    "id": "09-09-2024",
+    "date": "09-09-2024",
+    "riceOB": 114,
+    "riceExpend": 4,
+    "riceCB": 110,
+    "riceGiven": 0
+  },
+  {
+    "id": "10-09-2024",
+    "date": "10-09-2024",
+    "riceOB": 110,
+    "riceExpend": 4,
+    "riceCB": 106,
+    "riceGiven": 0
+  },
+  {
+    "id": "11-09-2024",
+    "date": "11-09-2024",
+    "riceOB": 106,
+    "riceExpend": 4,
+    "riceCB": 102,
+    "riceGiven": 0
+  },
+  {
     "id": "12-09-2024",
     "date": "12-09-2024",
-    "riceGiven": 0,
+    "riceOB": 102,
+    "riceExpend": 4,
     "riceCB": 98,
-    "riceExpend": 4
+    "riceGiven": 0
   },
   {
     "id": "13-09-2024",
     "date": "13-09-2024",
-    "riceCB": 94,
-    "riceGiven": 0,
+    "riceOB": 98,
     "riceExpend": 4,
-    "riceOB": 98
+    "riceCB": 94,
+    "riceGiven": 0
   }
 ]

@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Papa from "papaparse";
-export default function autoresult() {
+export default function Autoresult() {
   const [data, setData] = useState([]);
   const [columsArray, setColumsArray] = useState([]);
   const [values, setValues] = useState([]);
